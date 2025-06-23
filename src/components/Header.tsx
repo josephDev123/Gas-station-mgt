@@ -10,7 +10,7 @@ const Header = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-gradient-to-r  from-blue-600 to-blue-700  flex items-center justify-center">
+            <div className="w-8 h-8  flex items-center justify-center">
               {/* <span className="text-white font-bold text-sm">GS</span> */}
               <img src="./logo.png" alt="Logo" className="rounded-md" />
             </div>
