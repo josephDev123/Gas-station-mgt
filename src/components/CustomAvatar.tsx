@@ -20,15 +20,17 @@ export default function CustomAvatar({
     <section className="relative ">
       {status.loading && <Loading className="absolute inset-0 m-auto" />}
       {status.error && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-red-500 text-sm">Image failed to load</span>
-        </div>
+        <small className="flex flex-col items-center justify-center size-12 rounded-full border-2 text-red-500 text-xs text-center">
+          Image failed
+        </small>
       )}
       <img
         onLoad={() => setStatus({ ...status, loading: false })}
         onError={() => setStatus({ loading: false, error: true })}
         onLoadStart={() => setStatus({ loading: true, error: false })}
-        {...(status.error ? {} : { style: { display: "block" } })} // Hide image while error
+        {...(status.error
+          ? { style: { display: "none" } } // Hide image while error
+          : { style: { display: "block" } })}
         {...props}
         src={src}
         alt={alt}
