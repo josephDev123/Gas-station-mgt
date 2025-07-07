@@ -11,11 +11,17 @@ import Sale from "./pages/Dashboard/sale/page";
 import Customer from "./pages/Dashboard/customer/page";
 import Expenses from "./pages/Dashboard/expenses/page";
 import Analysis from "./pages/Dashboard/analysis/page";
+import Auth from "./pages/Auth";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: Index,
+  },
+
+  {
+    path: "/auth",
+    Component: Auth,
   },
 
   {

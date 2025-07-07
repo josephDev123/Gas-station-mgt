@@ -1,9 +1,15 @@
 import { Button } from "@/components/ui/button";
+import { useAppSelector } from "@/lib/redux/hooks";
+import { isAuthenticated } from "@/utils/isUserAuthenticated";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const user = useAppSelector((state) => state.user);
+  const isAuth = isAuthenticated(user);
 
   return (
     <header className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
@@ -47,12 +53,23 @@ const Header = () => {
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
-            <Button
-              variant="ghost"
-              className="text-gray-600 hover:text-blue-600"
-            >
-              Learn More
-            </Button>
+            {isAuth ? (
+              <Button
+                onClick={() => navigate("dashboard")}
+                variant="ghost"
+                className="text-gray-600 hover:text-blue-600"
+              >
+                Dashboard
+              </Button>
+            ) : (
+              <Button
+                onClick={() => navigate("auth")}
+                variant="ghost"
+                className="text-gray-600 hover:text-blue-600"
+              >
+                Login
+              </Button>
+            )}
             <Button className="bg-blue-600 hover:bg-blue-700 text-white">
               Request Demo
             </Button>
