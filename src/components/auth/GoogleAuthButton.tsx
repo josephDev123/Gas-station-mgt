@@ -24,8 +24,8 @@ const GoogleAuthButton = () => {
       type="button"
       variant="outline"
       onClick={handleGoogleAuth}
-      disabled={isLoading}
-      className="w-full bg-white hover:bg-gray-50 text-gray-900 border-gray-300 font-medium py-2.5 transition-colors duration-200"
+      disabled
+      className="w-full cursor-not-allowed bg-white hover:bg-gray-50 text-gray-900 border-gray-300 font-medium py-2.5 transition-colors duration-200"
     >
       {isLoading ? (
         <div className="flex items-center justify-center">

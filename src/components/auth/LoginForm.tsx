@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Mail, Lock, LogIn } from "lucide-react";
+import { Mail, Lock, LogIn, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import GoogleAuthButton from "./GoogleAuthButton";
+import { useNavigate } from "react-router-dom";
 
 interface LoginFormProps {
   onForgotPassword: () => void;
@@ -14,6 +15,7 @@ const LoginForm = ({ onForgotPassword }: LoginFormProps) => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -125,6 +127,15 @@ const LoginForm = ({ onForgotPassword }: LoginFormProps) => {
       </div>
 
       <GoogleAuthButton />
+      <Button
+        type="button"
+        variant="outline"
+        onClick={() => navigate("/")}
+        className="w-full bg-slate-800/50 border-slate-600 text-slate-300 hover:bg-slate-700/50 hover:text-white"
+      >
+        <ArrowLeft className="w-4 h-4 mr-2" />
+        Back to Home
+      </Button>
     </div>
   );
 };

@@ -1,14 +1,12 @@
-import { useState } from "react";
 import LoginForm from "@/components/auth/LoginForm";
 import RegisterForm from "@/components/auth/RegisterForm";
 import { Button } from "@/components/ui/button";
 import { Fuel } from "lucide-react";
 import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
+import { useSearchParams } from "react-router-dom";
 
 const Auth = () => {
-  const [activeForm, setActiveForm] = useState<
-    "login" | "register" | "forgot-password"
-  >("login");
+  const [searchParam, setSearchParam] = useSearchParams();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 flex items-center justify-center p-4">
@@ -31,27 +29,35 @@ const Auth = () => {
         {/* Form Container */}
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-8">
           {/* Form Toggle - Only show for login and register */}
-          {activeForm !== "forgot-password" && (
+          {searchParam.get("auth_type") !== "forgot-password" && (
             <div className="flex bg-slate-800/50 rounded-lg p-1 mb-6">
               <Button
-                variant={activeForm === "login" ? "default" : "ghost"}
+                variant={
+                  searchParam.get("auth_type") === "login" ? "default" : "ghost"
+                }
                 className={`flex-1 ${
-                  activeForm === "login"
+                  searchParam.get("auth_type") === "login"
                     ? "bg-orange-500 hover:bg-orange-600 text-white"
                     : "text-slate-300 hover:text-white hover:bg-slate-700/50"
                 }`}
-                onClick={() => setActiveForm("login")}
+                // onClick={() => setActiveForm("login")}
+                onClick={() => setSearchParam({ auth_type: "login" })}
               >
                 Login
               </Button>
               <Button
-                variant={activeForm === "register" ? "default" : "ghost"}
+                variant={
+                  searchParam.get("auth_type") === "register"
+                    ? "default"
+                    : "ghost"
+                }
                 className={`flex-1 ${
-                  activeForm === "register"
+                  searchParam.get("auth_type") === "register"
                     ? "bg-orange-500 hover:bg-orange-600 text-white"
                     : "text-slate-300 hover:text-white hover:bg-slate-700/50"
                 }`}
-                onClick={() => setActiveForm("register")}
+                // onClick={() => setActiveForm("register")}
+                onClick={() => setSearchParam({ auth_type: "register" })}
               >
                 Register
               </Button>
@@ -59,14 +65,18 @@ const Auth = () => {
           )}
 
           {/* Forms */}
-          {activeForm === "login" && (
+          {searchParam.get("auth_type") === "login" && (
             <LoginForm
-              onForgotPassword={() => setActiveForm("forgot-password")}
+              onForgotPassword={() =>
+                setSearchParam({ auth_type: "forgot-password" })
+              }
             />
           )}
-          {activeForm === "register" && <RegisterForm />}
-          {activeForm === "forgot-password" && (
-            <ForgotPasswordForm onBack={() => setActiveForm("login")} />
+          {searchParam.get("auth_type") === "register" && <RegisterForm />}
+          {searchParam.get("auth_type") === "forgot-password" && (
+            <ForgotPasswordForm
+              onBack={() => setSearchParam({ auth_type: "login" })}
+            />
           )}
         </div>
 
