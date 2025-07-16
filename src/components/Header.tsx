@@ -9,6 +9,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.user);
+
   const isAuth = isAuthenticated(user);
 
   return (
@@ -63,7 +64,7 @@ const Header = () => {
               </Button>
             ) : (
               <Button
-                onClick={() => navigate("auth")}
+                onClick={() => navigate("auth?auth_type=login")}
                 variant="ghost"
                 className="text-gray-600 hover:text-blue-600"
               >
@@ -115,12 +116,23 @@ const Header = () => {
                 Contact
               </a>
               <div className="pt-4 space-y-2">
-                <Button
-                  variant="ghost"
-                  className="w-full text-gray-600 hover:text-blue-600"
-                >
-                  Learn More
-                </Button>
+                {isAuth ? (
+                  <Button
+                    variant="ghost"
+                    onClick={() => navigate("dashboard")}
+                    className="w-full text-gray-600 hover:text-blue-600"
+                  >
+                    Dashboard
+                  </Button>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    onClick={() => navigate("auth?auth_type=login")}
+                    className="w-full text-gray-600 hover:text-blue-600"
+                  >
+                    Login
+                  </Button>
+                )}
                 <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                   Request Demo
                 </Button>

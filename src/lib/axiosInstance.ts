@@ -3,7 +3,7 @@ import { persistor, store } from "./redux/store";
 import { toast } from "react-hot-toast";
 
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.BASEURL,
+  baseURL: import.meta.env.VITE_BASEURL,
   withCredentials: true,
 });
 
@@ -76,5 +76,5 @@ axiosInstance.interceptors.response.use(
 export default axiosInstance;
 
 export const axiosUnToken = axios.create({
-  baseURL: import.meta.env.BASEURL,
+  baseURL: import.meta.env.VITE_BASEURL,
 });

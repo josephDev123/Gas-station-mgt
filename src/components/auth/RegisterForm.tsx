@@ -1,42 +1,66 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Mail, Lock, User, UserPlus } from "lucide-react";
+import { Mail, Lock, User, UserPlus, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import GoogleAuthButton from "./GoogleAuthButton";
+import { useNavigate } from "react-router-dom";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { IRegisterSchema, RegisterSchema } from "@/lib/zod/RegisterSchema";
+import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+import { axiosUnToken } from "@/lib/axiosInstance";
+import { AxiosErrorHandler } from "@/utils/axiosErrorHandler";
 
 const RegisterForm = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IRegisterSchema>({ resolver: zodResolver(RegisterSchema) });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const { mutate, isPending, isError } = useMutation({
+    mutationFn: async (variable: Omit<IRegisterSchema, "confirmPassword">) => {
+      try {
+        const req = await axiosUnToken({
+          method: "POST",
+          url: "auth/register",
+          data: variable,
+        });
+        return req.data;
+      } catch (error) {
+        if (error instanceof Error) {
+          throw error;
+        }
+        throw new Error("something went wrong");
+      }
+    },
+  });
 
-    if (password !== confirmPassword) {
-      toast({
-        title: "Password Mismatch",
-        description: "Passwords do not match. Please try again.",
-        variant: "destructive",
-      });
-      return;
-    }
+  const onSubmit: SubmitHandler<IRegisterSchema> = async (data) => {
+    const payload: Omit<IRegisterSchema, "confirmPassword"> = {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+    };
+    mutate(payload, {
+      onSuccess: (data) => {
+        console.log(data);
+        toast.success("User register successful");
+        setTimeout(() => navigate("/auth?auth_type=login"), 1000);
+        return;
+      },
 
-    setIsLoading(true);
-
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      toast({
-        title: "Registration Successful",
-        description:
-          "Welcome to FuelStation Pro! Your account has been created.",
-      });
-    }, 1500);
+      onError: (error) => {
+        const errorMsg = AxiosErrorHandler(error);
+        console.log(errorMsg);
+        alert(errorMsg);
+        toast.error(errorMsg);
+        return;
+      },
+    });
   };
 
   return (
@@ -48,7 +72,7 @@ const RegisterForm = () => {
         <p className="text-slate-300">Join FuelStation Pro today</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="name" className="text-slate-200">
             Full Name
@@ -58,13 +82,15 @@ const RegisterForm = () => {
             <Input
               id="name"
               type="text"
+              {...register("name")}
               placeholder="Enter your full name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
               className="pl-10 bg-slate-800/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500"
               required
             />
           </div>
+          {errors?.name && (
+            <small className="text-red-400">{errors.name.message}</small>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -76,13 +102,16 @@ const RegisterForm = () => {
             <Input
               id="register-email"
               type="email"
+              {...register("email")}
               placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              // value={email}
               className="pl-10 bg-slate-800/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500"
               required
             />
           </div>
+          {errors?.email && (
+            <small className="text-red-400">{errors.email.message}</small>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -94,13 +123,16 @@ const RegisterForm = () => {
             <Input
               id="register-password"
               type="password"
+              {...register("password")}
               placeholder="Create a password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              // value={password}
               className="pl-10 bg-slate-800/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500"
               required
             />
           </div>
+          {errors?.password && (
+            <small className="text-red-400">{errors.password.message}</small>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -111,14 +143,19 @@ const RegisterForm = () => {
             <Lock className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
             <Input
               id="confirm-password"
+              {...register("confirmPassword")}
               type="password"
               placeholder="Confirm your password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              // value={confirmPassword}
               className="pl-10 bg-slate-800/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500"
               required
             />
           </div>
+          {errors?.confirmPassword && (
+            <small className="text-red-400">
+              {errors.confirmPassword.message}
+            </small>
+          )}
         </div>
 
         <div className="flex items-center space-x-2">
@@ -150,10 +187,10 @@ const RegisterForm = () => {
 
         <Button
           type="submit"
-          disabled={isLoading}
+          disabled={isPending}
           className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-2.5 transition-colors duration-200"
         >
-          {isLoading ? (
+          {isPending ? (
             <div className="flex items-center justify-center">
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
               Creating account...
@@ -179,6 +216,15 @@ const RegisterForm = () => {
       </div>
 
       <GoogleAuthButton />
+      <Button
+        type="button"
+        variant="outline"
+        onClick={() => navigate("/")}
+        className="w-full bg-slate-800/50 border-slate-600 text-slate-300 hover:bg-slate-700/50 hover:text-white"
+      >
+        <ArrowLeft className="w-4 h-4 mr-2" />
+        Back to Home
+      </Button>
     </div>
   );
 };
