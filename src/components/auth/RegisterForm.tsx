@@ -2,14 +2,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail, Lock, User, UserPlus, ArrowLeft } from "lucide-react";
-// import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import GoogleAuthButton from "./GoogleAuthButton";
 import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IRegisterSchema, RegisterSchema } from "@/lib/zod/RegisterSchema";
-import { useMutateAction } from "@/hooks/useMutation";
 import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+import { axiosUnToken } from "@/lib/axiosInstance";
+import { AxiosErrorHandler } from "@/utils/axiosErrorHandler";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -18,10 +20,24 @@ const RegisterForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<IRegisterSchema>({ resolver: zodResolver(RegisterSchema) });
-  const { mutate, isPending, isError } = useMutateAction<
-    any,
-    Omit<IRegisterSchema, "confirmPassword">
-  >("post", "auth/register");
+
+  const { mutate, isPending, isError } = useMutation({
+    mutationFn: async (variable: Omit<IRegisterSchema, "confirmPassword">) => {
+      try {
+        const req = await axiosUnToken({
+          method: "POST",
+          url: "auth/register",
+          data: variable,
+        });
+        return req.data;
+      } catch (error) {
+        if (error instanceof Error) {
+          throw error;
+        }
+        throw new Error("something went wrong");
+      }
+    },
+  });
 
   const onSubmit: SubmitHandler<IRegisterSchema> = async (data) => {
     const payload: Omit<IRegisterSchema, "confirmPassword"> = {
@@ -30,12 +46,19 @@ const RegisterForm = () => {
       password: data.password,
     };
     mutate(payload, {
-      onSuccess: () => {
+      onSuccess: (data) => {
+        console.log(data);
         toast.success("User register successful");
+        setTimeout(() => navigate("/auth?auth_type=login"), 1000);
+        return;
       },
 
       onError: (error) => {
-        toast.error(error.message || "something went wrong");
+        const errorMsg = AxiosErrorHandler(error);
+        console.log(errorMsg);
+        alert(errorMsg);
+        toast.error(errorMsg);
+        return;
       },
     });
   };

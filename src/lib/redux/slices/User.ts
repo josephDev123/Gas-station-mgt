@@ -19,12 +19,12 @@ const User = createSlice({
   name: "User",
   initialState,
   reducers: {
-    AddUser: (state: IUser, payload: PayloadAction<IUser>) => {
-      return { ...state, payload };
+    setUser: (state: IUser, action: PayloadAction<IUser>) => {
+      return { ...state, ...action.payload };
     },
   },
 });
 
-export const { AddUser } = User.actions;
+export const { setUser } = User.actions;
 
 export default User.reducer;
