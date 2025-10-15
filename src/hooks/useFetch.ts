@@ -8,8 +8,13 @@ import { axiosInstance } from "@/lib/axiosInstance";
 interface UseQueryFacadeOptions<TQueryFnData, TError, TData>
   extends UseQueryOptions<TQueryFnData, TError, TData> {}
 
-export function useQueryFacade<TQueryFnData, TError, TData = TQueryFnData>(
-  queryKey: any[],
+export function useQueryFacade<
+  TQueryFnData,
+  TError,
+  TKey,
+  TData = TQueryFnData
+>(
+  queryKey: TKey[],
   url: string,
   options?: UseQueryFacadeOptions<TQueryFnData, TError, TData>
 ): UseQueryResult<TData, TError> & { refresh: () => void } {

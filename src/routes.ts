@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+import Index from "./pages/client/Index";
+import NotFound from "./pages/client/NotFound";
 import DashboardLayout from "./pages/Dashboard/Layout";
 import DashboardIndex from "./pages/Dashboard/Index/page";
 import Fuel from "./pages/Dashboard/fuel/page";
@@ -11,7 +11,7 @@ import Sale from "./pages/Dashboard/sale/page";
 import Customer from "./pages/Dashboard/customer/page";
 import Expenses from "./pages/Dashboard/expenses/page";
 import Analysis from "./pages/Dashboard/analysis/page";
-import Auth from "./pages/Auth";
+import Auth from "./pages/client/Auth";
 import ProtectedUserDashboard from "./components/dashboard/ProtectedUserDashboard";
 import { protectedUserDashboard } from "./loader/protectUserDashboardLoader";
 
