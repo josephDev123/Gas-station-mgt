@@ -30,8 +30,8 @@ const Auth = () => {
         {/* Form Container */}
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-8">
           {/* Form Toggle - Only show for login and register */}
-          {searchParam.get("auth_type") !== "forgot-password-request" ||
-            (searchParam.get("auth_type") !== "reset-password" && (
+          {searchParam.get("auth_type") !== "forgot-password-request" &&
+            searchParam.get("auth_type") !== "reset-password" && (
               <div className="flex bg-slate-800/50 rounded-lg p-1 mb-6">
                 <Button
                   variant={
@@ -66,7 +66,7 @@ const Auth = () => {
                   Register
                 </Button>
               </div>
-            ))}
+            )}
 
           {/* Forms */}
           {searchParam.get("auth_type") === "login" && (
