@@ -2,15 +2,16 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Mail, ArrowLeft } from "lucide-react";
+import { Mail, ArrowLeft, Lock, EyeClosed, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface ForgotPasswordFormProps {
   onBack: () => void;
 }
 
-const ForgotPasswordForm = ({ onBack }: ForgotPasswordFormProps) => {
+const ResetPassword = ({ onBack }: ForgotPasswordFormProps) => {
   const [email, setEmail] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -34,30 +35,31 @@ const ForgotPasswordForm = ({ onBack }: ForgotPasswordFormProps) => {
         <h2 className="text-2xl font-semibold text-white mb-2">
           Reset Password
         </h2>
-        <p className="text-slate-300">
-          Enter your email to receive a reset link
-        </p>
+        <p className="text-slate-300">Enter your new Password</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="reset-email" className="text-slate-200">
-            Email Address
-          </Label>
-          <div className="relative">
-            <Mail className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
-            <Input
-              id="reset-email"
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="pl-10 bg-slate-800/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500"
-              required
+        <div className="relative">
+          <Lock className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+          <Input
+            id="password"
+            type={isPasswordVisible ? "text" : "password"}
+            className="pl-10 bg-slate-800/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500"
+            required
+          />
+          {isPasswordVisible && (
+            <EyeClosed
+              onClick={() => setIsPasswordVisible(false)}
+              className="absolute right-3 top-3 w-4 h-4 text-slate-400 cursor-pointer"
             />
-          </div>
+          )}
+          {!isPasswordVisible && (
+            <Eye
+              onClick={() => setIsPasswordVisible(true)}
+              className="absolute right-3 top-3 w-4 h-4 text-slate-400 cursor-pointer"
+            />
+          )}
         </div>
-
         <Button
           type="submit"
           disabled={isLoading}
@@ -69,7 +71,7 @@ const ForgotPasswordForm = ({ onBack }: ForgotPasswordFormProps) => {
               Sending...
             </div>
           ) : (
-            "Send Reset Link"
+            "Reset password"
           )}
         </Button>
 
@@ -87,4 +89,4 @@ const ForgotPasswordForm = ({ onBack }: ForgotPasswordFormProps) => {
   );
 };
 
-export default ForgotPasswordForm;
+export default ResetPassword;

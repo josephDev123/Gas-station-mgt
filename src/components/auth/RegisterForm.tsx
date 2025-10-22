@@ -1,16 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Mail, Lock, User, UserPlus, ArrowLeft } from "lucide-react";
+import { Mail, Lock, User, ArrowLeft, UserPlus } from "lucide-react";
 import GoogleAuthButton from "./GoogleAuthButton";
 import { useRegister } from "@/hooks/auth/useRegister";
 import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
-  const { errors, handleSubmit, isError, isPending, onSubmit, register } =
-    useRegister();
+  const { errors, handleSubmit, isPending, onSubmit, register } = useRegister();
+
   const navigate = useNavigate();
-  console.log(errors);
 
   return (
     <div className="space-y-6">
