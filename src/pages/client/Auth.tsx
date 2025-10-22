@@ -2,8 +2,9 @@ import LoginForm from "@/components/auth/LoginForm";
 import RegisterForm from "@/components/auth/RegisterForm";
 import { Button } from "@/components/ui/button";
 import { Fuel } from "lucide-react";
-import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
 import { useSearchParams } from "react-router-dom";
+import ForgotPasswordRequestForm from "@/components/auth/ForgotPasswordRequestForm";
+import ResetPassword from "@/components/auth/ResetPassword";
 
 const Auth = () => {
   const [searchParam, setSearchParam] = useSearchParams();
@@ -29,52 +30,61 @@ const Auth = () => {
         {/* Form Container */}
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-8">
           {/* Form Toggle - Only show for login and register */}
-          {searchParam.get("auth_type") !== "forgot-password" && (
-            <div className="flex bg-slate-800/50 rounded-lg p-1 mb-6">
-              <Button
-                variant={
-                  searchParam.get("auth_type") === "login" ? "default" : "ghost"
-                }
-                className={`flex-1 ${
-                  searchParam.get("auth_type") === "login"
-                    ? "bg-orange-500 hover:bg-orange-600 text-white"
-                    : "text-slate-300 hover:text-white hover:bg-slate-700/50"
-                }`}
-                // onClick={() => setActiveForm("login")}
-                onClick={() => setSearchParam({ auth_type: "login" })}
-              >
-                Login
-              </Button>
-              <Button
-                variant={
-                  searchParam.get("auth_type") === "register"
-                    ? "default"
-                    : "ghost"
-                }
-                className={`flex-1 ${
-                  searchParam.get("auth_type") === "register"
-                    ? "bg-orange-500 hover:bg-orange-600 text-white"
-                    : "text-slate-300 hover:text-white hover:bg-slate-700/50"
-                }`}
-                // onClick={() => setActiveForm("register")}
-                onClick={() => setSearchParam({ auth_type: "register" })}
-              >
-                Register
-              </Button>
-            </div>
-          )}
+          {searchParam.get("auth_type") !== "forgot-password-request" ||
+            (searchParam.get("auth_type") !== "reset-password" && (
+              <div className="flex bg-slate-800/50 rounded-lg p-1 mb-6">
+                <Button
+                  variant={
+                    searchParam.get("auth_type") === "login"
+                      ? "default"
+                      : "ghost"
+                  }
+                  className={`flex-1 ${
+                    searchParam.get("auth_type") === "login"
+                      ? "bg-orange-500 hover:bg-orange-600 text-white"
+                      : "text-slate-300 hover:text-white hover:bg-slate-700/50"
+                  }`}
+                  // onClick={() => setActiveForm("login")}
+                  onClick={() => setSearchParam({ auth_type: "login" })}
+                >
+                  Login
+                </Button>
+                <Button
+                  variant={
+                    searchParam.get("auth_type") === "register"
+                      ? "default"
+                      : "ghost"
+                  }
+                  className={`flex-1 ${
+                    searchParam.get("auth_type") === "register"
+                      ? "bg-orange-500 hover:bg-orange-600 text-white"
+                      : "text-slate-300 hover:text-white hover:bg-slate-700/50"
+                  }`}
+                  // onClick={() => setActiveForm("register")}
+                  onClick={() => setSearchParam({ auth_type: "register" })}
+                >
+                  Register
+                </Button>
+              </div>
+            ))}
 
           {/* Forms */}
           {searchParam.get("auth_type") === "login" && (
             <LoginForm
               onForgotPassword={() =>
-                setSearchParam({ auth_type: "forgot-password" })
+                setSearchParam({ auth_type: "forgot-password-request" })
               }
             />
           )}
           {searchParam.get("auth_type") === "register" && <RegisterForm />}
-          {searchParam.get("auth_type") === "forgot-password" && (
-            <ForgotPasswordForm
+          {searchParam.get("auth_type") === "forgot-password-request" && (
+            <ForgotPasswordRequestForm
+              onBack={() => setSearchParam({ auth_type: "login" })}
+            />
+          )}
+
+          {searchParam.get("auth_type") === "reset-password" && (
+            <ResetPassword
               onBack={() => setSearchParam({ auth_type: "login" })}
             />
           )}

@@ -4,114 +4,24 @@ import { Label } from "@/components/ui/label";
 import { Mail, Lock, LogIn, ArrowLeft, EyeClosed, Eye } from "lucide-react";
 import GoogleAuthButton from "./GoogleAuthButton";
 import { useNavigate } from "react-router-dom";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-hot-toast";
-import { useMutation } from "@tanstack/react-query";
-import { axiosUnToken } from "@/lib/axiosInstance";
-import { ILoginSchemaSchema, loginSchema } from "@/lib/zod/loginSchema";
-import { AxiosErrorHandler } from "@/utils/axiosErrorHandler";
-import { useAppDispatch } from "@/lib/redux/hooks";
-import { setUser } from "@/lib/redux/slices/User";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useLogin } from "@/hooks/auth/useLogin";
 
 interface LoginFormProps {
   onForgotPassword: () => void;
 }
 const LoginForm = ({ onForgotPassword }: LoginFormProps) => {
-  const [remember, setRemember] = useState<boolean | null>(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const {
+    HandleRememberMe,
+    remember,
+    isPending,
     register,
     handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<ILoginSchemaSchema>({ resolver: zodResolver(loginSchema) });
-
-  const { mutate, isPending, isError } = useMutation({
-    mutationFn: async (variable: ILoginSchemaSchema) => {
-      try {
-        const req = await axiosUnToken({
-          method: "POST",
-          url: "auth/login",
-          data: variable,
-        });
-        return req.data;
-      } catch (error) {
-        if (error instanceof Error) {
-          throw error;
-        }
-        throw new Error("something went wrong");
-      }
-    },
-  });
-
-  const onSubmit: SubmitHandler<ILoginSchemaSchema> = async (data) => {
-    const payload: ILoginSchemaSchema = {
-      email: data.email,
-      password: data.password,
-    };
-    mutate(payload, {
-      onSuccess: (data) => {
-        console.log(data);
-        toast.success("User register successful");
-        dispatch(setUser(data.data));
-        if (!remember) {
-          localStorage.removeItem("rememberMeData");
-        } else {
-          localStorage.setItem(
-            "rememberMeData",
-            JSON.stringify({
-              email: data.data.email,
-              password: payload.password,
-            })
-          );
-        }
-
-        setTimeout(() => navigate("/"), 1000);
-      },
-
-      onError: (error) => {
-        // console.log(error);
-        const errorMsg = AxiosErrorHandler(error);
-        console.log(errorMsg);
-        alert(errorMsg);
-        toast.error(errorMsg);
-
-        return;
-      },
-    });
-  };
-
-  const rememberMe = () => {
-    const rememberCurrent = !remember;
-    setRemember(rememberCurrent);
-    alert(rememberCurrent);
-    localStorage.setItem("rememberMe", JSON.stringify(rememberCurrent));
-  };
-
-  useEffect(() => {
-    const stored = localStorage.getItem("rememberMe");
-    const rememberMe = stored ? JSON.parse(stored) : false; // ✅ Parse JSON
-    setRemember(rememberMe);
-
-    //set the remember me data
-    const storedRememberMeData = localStorage.getItem("rememberMeData");
-    const rememberMeResult: {
-      password?: string;
-      email?: string;
-    } | null = storedRememberMeData ? JSON.parse(storedRememberMeData) : null; // ✅ Parse JSON
-
-    if (rememberMeResult?.email) {
-      setValue("email", rememberMeResult.email);
-    }
-
-    if (rememberMeResult?.password) {
-      setValue("password", rememberMeResult.password);
-    }
-  }, []); // ✅ Only run on mount
+    onSubmit,
+    errors,
+  } = useLogin();
+  const navigate = useNavigate();
 
   return (
     <div className="space-y-6">
@@ -176,7 +86,7 @@ const LoginForm = ({ onForgotPassword }: LoginFormProps) => {
           <div className="flex items-center space-x-2">
             <input
               checked={remember}
-              onChange={rememberMe}
+              onChange={HandleRememberMe}
               type="checkbox"
               id="remember"
               className="rounded border-slate-600 bg-slate-800/50 text-orange-500 focus:ring-orange-500"

@@ -3,7 +3,6 @@ import { IRegisterSchema, RegisterSchema } from "@/lib/zod/RegisterSchema";
 import { AxiosErrorHandler } from "@/utils/axiosErrorHandler";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -14,12 +13,11 @@ export function useRegister() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<IRegisterSchema>({
     resolver: zodResolver(RegisterSchema),
   });
-
-  // console.log(errors);
 
   const { mutate, isPending, isError } = useMutation({
     mutationFn: async (variable: Omit<IRegisterSchema, "confirmPassword">) => {
@@ -49,8 +47,9 @@ export function useRegister() {
 
     mutate(payload, {
       onSuccess: (data) => {
-        // console.log(data);
-        toast.success("User register successful");
+        console.log("success", data);
+        reset();
+        toast.success("Account created successfully! Please login.");
         setTimeout(() => navigate("/auth?auth_type=login"), 1000);
         return;
       },
@@ -67,7 +66,7 @@ export function useRegister() {
   return {
     // mutate,
     isPending,
-    isError,
+    // isError,
     register,
     handleSubmit,
     onSubmit,
