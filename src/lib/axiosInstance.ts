@@ -48,8 +48,8 @@ axiosInstance.interceptors.response.use(
       //   store.dispatch(logout());
       // await persistor.purge();
       setTimeout(() => {
-        window.location.href = "/auth/login";
-      }, 1000); // give toast 1.5s to show
+        window.location.href = "/auth?auth_type=login";
+      }, 1000);
 
       return Promise.reject(error);
     }
@@ -63,8 +63,8 @@ axiosInstance.interceptors.response.use(
       //   store.dispatch(logout());
       // await persistor.purge();
       setTimeout(() => {
-        window.location.href = "/auth/login";
-      }, 1000); // give toast 1.5s to show
+        window.location.href = "/auth?auth_type=login";
+      }, 1000);
 
       // return axiosInstance(originalRequest);
       return Promise.reject(error);
@@ -77,4 +77,5 @@ export default axiosInstance;
 
 export const axiosUnToken = axios.create({
   baseURL: import.meta.env.VITE_BASEURL,
+  withCredentials: true,
 });

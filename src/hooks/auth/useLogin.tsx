@@ -18,6 +18,7 @@ export function useLogin() {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<ILoginSchemaSchema>({ resolver: zodResolver(loginSchema) });
 
@@ -61,7 +62,7 @@ export function useLogin() {
           );
         }
 
-        // setTimeout(() => navigate("/"), 1000);
+        setTimeout(() => navigate("/"), 1000);
       },
 
       onError: (error) => {

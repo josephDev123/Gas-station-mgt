@@ -23,7 +23,7 @@ export function useQueryFacade<
     queryFn: async () => {
       try {
         const response = await axiosInstance.get(url);
-        return response.data;
+        return response.data.data;
       } catch (error) {
         throw error;
       }
