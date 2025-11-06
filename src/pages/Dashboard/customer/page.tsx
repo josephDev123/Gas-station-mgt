@@ -1,5 +1,9 @@
-import React from "react";
-
 export default function page() {
-  return <div>Customer page</div>;
+  return (
+    <main className="flex flex-col">
+      <div className="flex flex-col">
+        <h1 className="text-xl font-bold"> Customer </h1>
+      </div>
+    </main>
+  );
 }

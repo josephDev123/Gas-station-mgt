@@ -5,7 +5,6 @@ import DashboardLayout from "./pages/Dashboard/Layout";
 import DashboardIndex from "./pages/Dashboard/Index/page";
 import Fuel from "./pages/Dashboard/fuel/page";
 import Pump from "./pages/Dashboard/pump/page";
-import Employee from "./pages/Dashboard/employee/page";
 import Task from "./pages/Dashboard/task/page";
 import Sale from "./pages/Dashboard/sale/page";
 import Customer from "./pages/Dashboard/customer/page";
@@ -14,6 +13,7 @@ import Analysis from "./pages/Dashboard/analysis/page";
 import Auth from "./pages/client/Auth";
 import ProtectedUserDashboard from "./components/dashboard/ProtectedUserDashboard";
 import { protectedUserDashboard } from "./loader/protectUserDashboardLoader";
+import EmployeePage from "./pages/Dashboard/employee/page";
 
 export const router = createBrowserRouter([
   {
@@ -37,7 +37,7 @@ export const router = createBrowserRouter([
           { index: true, Component: DashboardIndex },
           { path: "fuel", Component: Fuel },
           { path: "pump", Component: Pump },
-          { path: "employee", Component: Employee },
+          { path: "employee", Component: EmployeePage },
           { path: "task", Component: Task },
           { path: "sale", Component: Sale },
           { path: "customer", Component: Customer },
