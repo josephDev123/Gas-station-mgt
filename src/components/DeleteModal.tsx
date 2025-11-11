@@ -1,0 +1,59 @@
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Dispatch, ReactNode, SetStateAction } from "react";
+
+interface DeleteModalProps<T> {
+  heading: string;
+  desc: string | ReactNode;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  action: (id?: T) => void;
+}
+export default function DeleteModal<T>({
+  action,
+  heading,
+  desc,
+  open,
+  setOpen,
+}: DeleteModalProps<T>) {
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      {/* <DialogTrigger asChild>
+        <Button variant="outline">Share</Button>
+      </DialogTrigger> */}
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="sm:text-3xl text-2xl font-bold">
+            {heading}
+          </DialogTitle>
+          <DialogDescription>{desc}</DialogDescription>
+        </DialogHeader>
+        <div className="flex items-center gap-2">
+          <div className="grid flex-1 gap-2"></div>
+        </div>
+        <DialogFooter className="sm:justify-start">
+          <Button onClick={() => action()} type="button" variant="destructive">
+            Delete
+          </Button>
+
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
