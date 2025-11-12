@@ -1,20 +1,25 @@
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/axiosInstance";
-import { toast } from "react-hot-toast";
-import { AxiosError } from "axios";
+import { AxiosErrorHandler } from "@/utils/axiosErrorHandler";
 
 export const useMutateAction = <TData, TVariables>(
   method: "post" | "put",
   url: string,
   options?: UseMutationOptions<TData, Error, TVariables>
 ) => {
-  return useMutation<TData, Error, TVariables>({
+  const { mutate, isPending, isError, error, data } = useMutation<
+    TData,
+    Error,
+    TVariables
+  >({
     mutationFn: async (data: TVariables) => {
       try {
         const response = await axiosInstance[method]<TData>(url, data);
         return response.data;
       } catch (error) {
-        throw error;
+        // throw error;
+        const errorMsg = AxiosErrorHandler(error);
+        throw new Error(errorMsg);
       }
     },
     onSuccess: (data) => {
@@ -31,5 +36,7 @@ export const useMutateAction = <TData, TVariables>(
     },
     ...options,
   });
+
+  return { mutate, isPending, isError, error, data };
 };
 // zibixe@mailinator.com
