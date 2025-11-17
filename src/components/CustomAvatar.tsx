@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 import Loading from "./Loading";
 import { useState } from "react";
-import { error } from "console";
 
 interface AvatarProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;

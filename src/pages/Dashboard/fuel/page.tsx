@@ -8,7 +8,11 @@ import {
 import { fuelColumnDef } from "./columnDefs/fuelColumn";
 import { IFuel } from "./type/IFuel";
 import { LoaderCircle } from "lucide-react";
-import { CreateFuelModal } from "./components.tsx/CreateFuelModal";
+// import { CreateFuelModal } from "./components.tsx/CreateFuelModal";
+import { lazy, Suspense, useState } from "react";
+import Loading from "@/components/Loading";
+
+const CreateFuelModal = lazy(() => import("./components.tsx/CreateFuelModal"));
 
 const fallbackData = [];
 
@@ -36,16 +40,13 @@ export default function page() {
         </p>
       </section>
       <section className="flex justify-end">
-        {/* <motion.button
-          // onClick={() => setOpen(true)}
-          type="button"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          className="px-4 py-2 rounded-md  shadow-inner bg-green-500 hover:bg-green-600 text-white"
+        <Suspense
+          fallback={
+            <Loading className="h-52 flex flex-col justify-center items-center" />
+          }
         >
-          Add
-        </motion.button> */}
-        <CreateFuelModal />
+          <CreateFuelModal />
+        </Suspense>
       </section>
 
       <section className="overflow-x-auto mt-5 bg-white rounded-lg p-4">

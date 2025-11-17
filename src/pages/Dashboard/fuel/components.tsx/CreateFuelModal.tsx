@@ -25,15 +25,17 @@ import {
 } from "../schema/createFuelSchema";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, Control } from "react-hook-form";
-import { FormEventHandler, useRef } from "react";
+import { Controller } from "react-hook-form";
+import { useRef } from "react";
+import Loading from "@/components/Loading";
+import toast from "react-hot-toast";
+import { queryClient } from "@/App";
 
 const units = ["LITRE", "GALLON"];
 const fuelTypes = ["DIESEL", "GASOLINE", "PMS", "LPG"];
-export function CreateFuelModal() {
+export default function CreateFuelModal() {
   const {
     handleSubmit,
-    reset,
     control,
     register,
     formState: { errors },
@@ -41,14 +43,32 @@ export function CreateFuelModal() {
     resolver: zodResolver(createFuelSchema),
   });
   const { mutate, isPending, isError, error, data } = useMutateAction<
-    ICreateFuelSchema,
-    Error
+    ICreateFuelSchema & { msg: string },
+    ICreateFuelSchema
   >("post", "fuel/create");
 
-  const formRef = useRef<HTMLFormElement | null>(null);
+  // const formRef = useRef<HTMLFormElement | null>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
 
   const handleOnSubmit: SubmitHandler<ICreateFuelSchema> = (data) => {
-    console.log("Form data:", data);
+    console.log(data);
+    mutate(data, {
+      onError: async (error) => {
+        console.log(error);
+        toast.error(error.message);
+        return;
+      },
+      onSuccess: async (data) => {
+        console.log(data.msg);
+        toast.success(data.msg);
+        await queryClient.invalidateQueries({
+          queryKey: ["fuel"],
+          exact: true,
+        });
+        closeBtnRef.current?.click();
+        return;
+      },
+    });
   };
 
   return (
@@ -70,7 +90,6 @@ export function CreateFuelModal() {
         </DialogHeader>
         <div className="flex-1 w-full gap-2 overflow-y-auto">
           <form
-            ref={formRef}
             onSubmit={handleSubmit(handleOnSubmit)}
             className="flex flex-col space-y-4"
           >
@@ -190,22 +209,31 @@ export function CreateFuelModal() {
                 </small>
               )}
             </div>
+            {/* 
+            <button
+              type="submit"
+              className="inline-flex gap-2 items-center p-2 border rounded-md"
+            >
+              {isPending && <Loading className="text-yellow-400 text-2xl" />}
+              Create
+            </button> */}
+            <DialogFooter className="gap-2 justify-start">
+              <Button
+                type="submit"
+                variant="outline"
+                className="inline-flex gap-2 items-center "
+              >
+                {isPending && <Loading className="text-yellow-400 text-2xl" />}
+                Create
+              </Button>
+              <DialogClose asChild>
+                <Button ref={closeBtnRef} type="button" variant="destructive">
+                  Close
+                </Button>
+              </DialogClose>
+            </DialogFooter>
           </form>
         </div>
-        <DialogFooter className="gap-2 justify-start">
-          <Button
-            onClick={() => formRef.current?.requestSubmit()}
-            type="button"
-            variant="outline"
-          >
-            Create
-          </Button>
-          <DialogClose asChild>
-            <Button type="button" variant="destructive">
-              Close
-            </Button>
-          </DialogClose>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
