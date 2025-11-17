@@ -8,7 +8,7 @@ import { router } from "./routes";
 import { Provider } from "react-redux";
 import { store } from "./lib/redux/store";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
