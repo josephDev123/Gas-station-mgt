@@ -17,8 +17,13 @@ export const fuelColumnDef: ColumnDef<IFuel>[] = [
   },
 
   {
-    header: "Fuel Volumn",
+    header: "Fuel Volume",
     accessorKey: "fuelVolume",
+  },
+
+  {
+    header: "Fuel Volume Left",
+    accessorKey: "volumeLeft",
   },
 
   {

@@ -1,5 +1,4 @@
 import { useQueryFacade } from "@/hooks/useFetch";
-import { motion } from "motion/react";
 import {
   flexRender,
   getCoreRowModel,
@@ -8,7 +7,6 @@ import {
 import { fuelColumnDef } from "./columnDefs/fuelColumn";
 import { IFuel } from "./type/IFuel";
 import { LoaderCircle } from "lucide-react";
-// import { CreateFuelModal } from "./components.tsx/CreateFuelModal";
 import { lazy, Suspense, useState } from "react";
 import Loading from "@/components/Loading";
 
@@ -49,7 +47,7 @@ export default function page() {
         </Suspense>
       </section>
 
-      <section className="overflow-x-auto mt-5 bg-white rounded-lg p-4">
+      <section className="overflow-x-auto max-w-full mt-5 bg-white rounded-lg p-4">
         {isLoading ? (
           <div className="flex flex-col h-52 justify-center items-center">
             <LoaderCircle className="animate-spin" />
@@ -66,7 +64,7 @@ export default function page() {
                   {headerGroup.headers.map((header) => (
                     <th
                       key={header.id}
-                      className="border border-gray-300 px-4 py-2 text-left"
+                      className="border border-gray-300 px-4 py-2 text-left text-nowrap"
                     >
                       {header.isPlaceholder
                         ? null

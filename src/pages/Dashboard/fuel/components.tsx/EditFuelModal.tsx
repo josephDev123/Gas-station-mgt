@@ -20,72 +20,96 @@ import {
 } from "@/components/ui/select";
 import { useMutateAction } from "@/hooks/useMutation";
 import {
-  createFuelSchema,
-  ICreateFuelSchema,
+  IUpdateFuelSchema,
+  updateFuelSchema,
 } from "../schema/createFuelSchema";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller } from "react-hook-form";
-import { useRef } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import Loading from "@/components/Loading";
 import toast from "react-hot-toast";
 import { queryClient } from "@/App";
+import { Row } from "@tanstack/react-table";
+import { IFuel } from "../type/IFuel";
 
 const units = ["LITRE", "GALLON"];
 const fuelTypes = ["DIESEL", "GASOLINE", "PMS", "LPG"];
-export default function CreateFuelModal() {
+
+interface EditFuelModalProps {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  row: Row<IFuel>;
+}
+export default function EditFuelModal({
+  row,
+  open,
+  setOpen,
+}: EditFuelModalProps) {
   const {
     handleSubmit,
     control,
     register,
+    setValue,
     formState: { errors },
-  } = useForm<ICreateFuelSchema>({
-    resolver: zodResolver(createFuelSchema),
+  } = useForm<IUpdateFuelSchema>({
+    resolver: zodResolver(updateFuelSchema),
   });
-  const { mutate, isPending, isError, error, data } = useMutateAction<
-    ICreateFuelSchema & { msg: string },
-    ICreateFuelSchema
-  >("post", "fuel/create");
+  const { mutate, isPending } = useMutateAction<
+    IUpdateFuelSchema & { msg: string },
+    IUpdateFuelSchema
+  >("put", "fuel/update");
 
   const closeBtnRef = useRef<HTMLButtonElement>(null);
 
-  const handleOnSubmit: SubmitHandler<ICreateFuelSchema> = (data) => {
-    console.log(data);
+  const handleOnSubmit: SubmitHandler<IUpdateFuelSchema> = (data) => {
+    // console.log(data);
     mutate(data, {
-      onError: async (error) => {
-        console.log(error);
-        toast.error(error.message);
+      onError: (error) => {
+        console.log("error", error);
+        const errMessage =
+          error?.message ?? String(error ?? "An error occurred");
+        toast.error(errMessage);
         return;
       },
       onSuccess: async (data) => {
-        console.log(data.msg);
+        // console.log(data.msg);
         toast.success(data.msg);
         await queryClient.invalidateQueries({
           queryKey: ["fuel"],
           exact: true,
         });
-        closeBtnRef.current?.click();
+        setTimeout(() => closeBtnRef.current?.click(), 1000);
+
         return;
       },
     });
   };
 
+  useEffect(() => {
+    setValue("name", row?.original?.name);
+    setValue("fuelType", row?.original?.fuelType);
+    setValue("fuelVolume", Number(row?.original?.fuelVolume));
+    setValue("unit", row?.original?.unit);
+    setValue("price_per", row?.original?.price_per);
+  }, [open]);
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>
+    <Dialog open={open} onOpenChange={setOpen}>
+      {/* <DialogTrigger asChild>
         <Button
           variant="default"
           className="px-4 py-2 rounded-md  shadow-inner bg-green-500 hover:bg-green-600 text-white"
         >
           Add
         </Button>
-      </DialogTrigger>
+      </DialogTrigger> */}
       <DialogContent className="w-[90%] sm:max-w-[500px] max-h-[80vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="sm:text-2xl text-xl font-bold">
-            Create Fuel Depot
+            Edit Fuel Depot
           </DialogTitle>
-          <DialogDescription>Manage your Fuel</DialogDescription>
+          <DialogDescription>Edit your Fuel</DialogDescription>
         </DialogHeader>
         <div className="flex-1 w-full gap-2 overflow-y-auto">
           <form

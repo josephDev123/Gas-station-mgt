@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dispatch, ReactNode, SetStateAction } from "react";
+import Loading from "./Loading";
 
 interface DeleteModalProps<T> {
   heading: string;
@@ -19,6 +20,7 @@ interface DeleteModalProps<T> {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   action: (id?: T) => void;
+  deleteStatus: boolean;
 }
 export default function DeleteModal<T>({
   action,
@@ -26,6 +28,7 @@ export default function DeleteModal<T>({
   desc,
   open,
   setOpen,
+  deleteStatus,
 }: DeleteModalProps<T>) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -43,8 +46,14 @@ export default function DeleteModal<T>({
           <div className="grid flex-1 gap-2"></div>
         </div>
         <DialogFooter className="sm:justify-start">
-          <Button onClick={() => action()} type="button" variant="destructive">
-            Delete
+          <Button
+            className="inline-flex gap-2 items-center"
+            onClick={() => action()}
+            type="button"
+            variant="destructive"
+          >
+            Delete{" "}
+            {deleteStatus && <Loading className="text-3xl text-yellow-500" />}
           </Button>
 
           <DialogClose asChild>
