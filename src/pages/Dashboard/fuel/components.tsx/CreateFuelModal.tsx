@@ -26,14 +26,22 @@ import {
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller } from "react-hook-form";
-import { useRef } from "react";
+import { Dispatch, SetStateAction, useRef } from "react";
 import Loading from "@/components/Loading";
 import toast from "react-hot-toast";
 import { queryClient } from "@/App";
 
 const units = ["LITRE", "GALLON"];
 const fuelTypes = ["DIESEL", "GASOLINE", "PMS", "LPG"];
-export default function CreateFuelModal() {
+
+interface ICreateFuelModalProps {
+  open: boolean;
+  onOpenChange: Dispatch<SetStateAction<boolean>>;
+}
+export default function CreateFuelModal({
+  open,
+  onOpenChange,
+}: ICreateFuelModalProps) {
   const {
     handleSubmit,
     control,
@@ -71,15 +79,15 @@ export default function CreateFuelModal() {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* <DialogTrigger asChild>
         <Button
           variant="default"
           className="px-4 py-2 rounded-md  shadow-inner bg-green-500 hover:bg-green-600 text-white"
         >
           Add
         </Button>
-      </DialogTrigger>
+      </DialogTrigger> */}
       <DialogContent className="w-[90%] sm:max-w-[500px] max-h-[80vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="sm:text-2xl text-xl font-bold">

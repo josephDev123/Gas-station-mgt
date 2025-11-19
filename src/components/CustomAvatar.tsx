@@ -1,6 +1,9 @@
 import { cn } from "@/lib/utils";
 import Loading from "./Loading";
 import { useState } from "react";
+import { MdErrorOutline } from "react-icons/md";
+import { FiAlertTriangle } from "react-icons/fi";
+import { images } from "@/utils/images";
 
 interface AvatarProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
@@ -19,8 +22,10 @@ export default function CustomAvatar({
     <section className="relative ">
       {status.loading && <Loading className="absolute inset-0 m-auto" />}
       {status.error && (
-        <small className="flex flex-col items-center justify-center size-12 rounded-full border-2 text-red-500 text-xs text-center">
-          Image failed
+        <small className="flex relative flex-col items-center justify-center size-12 rounded-full border-2 text-red-500 text-xs text-center">
+          {/* Image failed */}
+          <FiAlertTriangle className="text-red-700 text-3xl absolute top-auto left-auto z-50" />
+          <img src={images.avatar} alt="user  avatar" />
         </small>
       )}
       <img

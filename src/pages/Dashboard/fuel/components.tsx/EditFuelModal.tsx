@@ -58,7 +58,7 @@ export default function EditFuelModal({
   const { mutate, isPending } = useMutateAction<
     IUpdateFuelSchema & { msg: string },
     IUpdateFuelSchema
-  >("put", "fuel/update");
+  >("put", `fuel/update/${row?.original?.id}`);
 
   const closeBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -67,9 +67,7 @@ export default function EditFuelModal({
     mutate(data, {
       onError: (error) => {
         console.log("error", error);
-        const errMessage =
-          error?.message ?? String(error ?? "An error occurred");
-        toast.error(errMessage);
+        toast.error(error.message || error.toString());
         return;
       },
       onSuccess: async (data) => {

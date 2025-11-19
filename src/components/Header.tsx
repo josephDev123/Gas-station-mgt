@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/lib/redux/hooks";
+import { images } from "@/utils/images";
 import { isAuthenticated } from "@/utils/isUserAuthenticated";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
@@ -19,7 +20,7 @@ const Header = () => {
           <div className="flex items-center">
             <div className="w-8 h-8  flex items-center justify-center">
               {/* <span className="text-white font-bold text-sm">GS</span> */}
-              <img src="./logo.png" alt="Logo" className="rounded-md" />
+              <img src={images.logo} alt="Logo" className="rounded-md" />
             </div>
             <span className="ml-3 text-xl font-bold text-gray-900">
               GasStation Pro

@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Index from "./pages/client/Index";
 import NotFound from "./pages/client/NotFound";
-import DashboardLayout from "./pages/Dashboard/Layout";
+import DashboardLayout from "./components/dashboard/Layout";
 import DashboardIndex from "./pages/Dashboard/Index/page";
 import Fuel from "./pages/Dashboard/fuel/page";
 import Pump from "./pages/Dashboard/pump/page";

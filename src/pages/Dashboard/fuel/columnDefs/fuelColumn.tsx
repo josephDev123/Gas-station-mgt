@@ -10,6 +10,10 @@ export const fuelColumnDef: ColumnDef<IFuel>[] = [
   {
     header: "Fuel name",
     accessorKey: "name",
+    cell: ({ row }) => {
+      const name = row?.original?.name ?? "N/A";
+      return <div className="min-w-44">{name}</div>;
+    },
   },
   {
     header: "Fuel Type",
@@ -24,6 +28,9 @@ export const fuelColumnDef: ColumnDef<IFuel>[] = [
   {
     header: "Fuel Volume Left",
     accessorKey: "volumeLeft",
+    cell: ({ row }) => {
+      return row?.original?.volumeLeft ?? "N/A";
+    },
   },
 
   {
@@ -39,6 +46,13 @@ export const fuelColumnDef: ColumnDef<IFuel>[] = [
   {
     header: "Created At",
     accessorKey: "createdAt",
+    cell: ({ row }) => {
+      const date = new Date(row?.original?.createdAt ?? null);
+      if (isNaN(date.getTime())) return ""; // handle invalid/null date
+
+      const dateTime = date.toLocaleString(); // shows date + time based on user locale
+      return <div className="min-w-44">{dateTime}</div>;
+    },
   },
 
   {

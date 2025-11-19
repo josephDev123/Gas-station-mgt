@@ -2,31 +2,36 @@ import { useQueryFacade } from "@/hooks/useFetch";
 import {
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { fuelColumnDef } from "./columnDefs/fuelColumn";
 import { IFuel } from "./type/IFuel";
 import { LoaderCircle } from "lucide-react";
 import { lazy, Suspense, useState } from "react";
-import Loading from "@/components/Loading";
+import { Button } from "@/components/ui/button";
 
 const CreateFuelModal = lazy(() => import("./components.tsx/CreateFuelModal"));
 
 const fallbackData = [];
 
 export default function page() {
+  const [isCreateFuelModalOpen, setIsCreateFuelModalOpen] = useState(false);
+  const [globalFilter, setGlobal] = useState<any[]>([]);
   const { isLoading, isError, error, data } = useQueryFacade<
     IFuel[],
     Error,
     string,
     IFuel[]
   >(["fuel"], "fuel/find");
-  // console.log(data);
 
   const table = useReactTable({
     columns: fuelColumnDef,
     data: data ?? fallbackData,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    state: { globalFilter },
+    onGlobalFilterChange: setGlobal,
   });
   return (
     <main className="flex flex-col p-4">
@@ -37,14 +42,22 @@ export default function page() {
           levels, and pricing details.
         </p>
       </section>
-      <section className="flex justify-end">
-        <Suspense
-          fallback={
-            <Loading className="h-52 flex flex-col justify-center items-center" />
-          }
+      <section className="flex justify-between items-center mt-4">
+        <input
+          type="search"
+          name=""
+          id=""
+          className="p-2 rounded-md border shadow-sm"
+          placeholder="Search"
+          onChange={(e) => table.setGlobalFilter(String(e.target.value))}
+        />
+        <Button
+          onClick={() => setIsCreateFuelModalOpen(true)}
+          variant="default"
+          className="px-4 py-2 rounded-md  shadow-inner bg-green-500 hover:bg-green-600 text-white"
         >
-          <CreateFuelModal />
-        </Suspense>
+          Add
+        </Button>
       </section>
 
       <section className="overflow-x-auto max-w-full mt-5 bg-white rounded-lg p-4">
@@ -101,6 +114,17 @@ export default function page() {
           </table>
         )}
       </section>
+
+      <Suspense
+      // fallback={
+      //   <Loading className="h-52 flex flex-col justify-center items-center" />
+      // }
+      >
+        <CreateFuelModal
+          open={isCreateFuelModalOpen}
+          onOpenChange={setIsCreateFuelModalOpen}
+        />
+      </Suspense>
     </main>
   );
 }

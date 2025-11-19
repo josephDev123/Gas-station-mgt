@@ -5,6 +5,7 @@ import LeftPanel from "@/components/dashboard/LeftPanel";
 import { useEffect, useState } from "react";
 import MobileLeftpanel from "@/components/dashboard/MobileLeftpanel";
 import OverlayContainer from "@/components/OverlayContainer";
+import { images } from "@/utils/images";
 
 export default function DashboardLayout() {
   const [isShow, setShow] = useState(true);
@@ -41,7 +42,7 @@ export default function DashboardLayout() {
                 isShow ? "" : "hidden"
               } inline-flex items-center gap-2`}
             >
-              <img src="./logo.png" alt="logo" className="size-7 rounded-md" />
+              <img src={images.logo} alt="logo" className="size-7 rounded-md" />
               <span className="font-medium">Gas Station</span>
             </span>
 
@@ -51,11 +52,11 @@ export default function DashboardLayout() {
             />
           </div>
           <hr />
-          <div className="flex flex-col justify-center items-center py-3 w-full overflow-y-auto ">
+          <div className="flex flex-col justify-center items-center py-3 w-full overflow-y-auto  ">
             <LeftPanel isShow={isShow} />
           </div>
         </div>
-        <div className="w-full h-full">
+        <div className="w-full h-full overflow-x-auto">
           <Navbar mobileLeftPanelToggle={handleToggleMobileLeftPanel} />
           <OverlayContainer
             show={isMobileLeftPanel}
