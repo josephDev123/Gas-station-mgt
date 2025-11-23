@@ -7,6 +7,7 @@ import { GiFuelTank } from "react-icons/gi";
 import { FaTasks } from "react-icons/fa";
 import { BadgeDollarSign, Banknote } from "lucide-react";
 import { ChartNoAxesCombined } from "lucide-react";
+import { MdAssignment } from "react-icons/md";
 
 interface IleftPanel_items {
   label: string;
@@ -31,6 +32,11 @@ export const leftPanel_items: IleftPanel_items[] = [
     label: "Pump",
     link: "/dashboard/pump",
     icon: <FaGasPump className="size-4" />,
+  },
+  {
+    label: "Fuel-Pump",
+    link: "/dashboard/assign-fuel-to-pump",
+    icon: <MdAssignment className="size-4" />,
   },
 
   {

@@ -14,6 +14,7 @@ import Auth from "./pages/client/Auth";
 import ProtectedUserDashboard from "./components/dashboard/ProtectedUserDashboard";
 import { protectedUserDashboard } from "./loader/protectUserDashboardLoader";
 import EmployeePage from "./pages/Dashboard/employee/page";
+import FuelToPumpPage from "./pages/Dashboard/AssignFuelToPump/page";
 
 export const router = createBrowserRouter([
   {
@@ -37,6 +38,7 @@ export const router = createBrowserRouter([
           { index: true, Component: DashboardIndex },
           { path: "fuel", Component: Fuel },
           { path: "pump", Component: Pump },
+          { path: "assign-fuel-to-pump", Component: FuelToPumpPage },
           { path: "employee", Component: EmployeePage },
           { path: "task", Component: Task },
           { path: "sale", Component: Sale },
