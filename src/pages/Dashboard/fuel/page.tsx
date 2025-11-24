@@ -10,6 +10,10 @@ import { IFuel } from "./type/IFuel";
 import { LoaderCircle } from "lucide-react";
 import { lazy, Suspense, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { MdExpandLess } from "react-icons/md";
+import { useSearchParams } from "react-router-dom";
+import { url } from "node:inspector/promises";
+import Pagination from "@/components/commons/Pagination";
 
 const CreateFuelModal = lazy(() => import("./components.tsx/CreateFuelModal"));
 
@@ -18,21 +22,32 @@ const fallbackData = [];
 export default function page() {
   const [isCreateFuelModalOpen, setIsCreateFuelModalOpen] = useState(false);
   const [globalFilter, setGlobal] = useState<any[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const page = Number(searchParams.get("page") ?? "1");
+  const limit = Number(searchParams.get("limit") ?? "10");
+
   const { isLoading, isError, error, data } = useQueryFacade<
     IFuel[],
     Error,
-    string,
-    IFuel[]
-  >(["fuel"], "fuel/find");
+    string | object | number,
+    { fuels: IFuel[]; totalCount: number; page: number }
+  >(["fuel", { page }], `fuel/find?page=${page}&limit=${limit}`);
+
+  const totalPages = data?.fuels ? Math.ceil(data.totalCount / limit) : 0;
+
+  const decrementDisabled = page <= 1;
+  const incrementDisabled = page >= totalPages;
 
   const table = useReactTable({
     columns: fuelColumnDef,
-    data: data ?? fallbackData,
+    data: data?.fuels ?? fallbackData,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     state: { globalFilter },
     onGlobalFilterChange: setGlobal,
   });
+
   return (
     <main className="flex flex-col p-4">
       <section className="flex flex-col space-y-2">
@@ -71,6 +86,12 @@ export default function page() {
           </div>
         ) : (
           <table className="min-w-full border-collapse  border-gray-300 rounded-lg shadow-sm">
+            {data.fuels.length === 0 && (
+              <div className="flex flex-col h-52 justify-center items-center">
+                No fuel records found.
+              </div>
+            )}
+
             <thead className="bg-gray-100">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
@@ -111,15 +132,20 @@ export default function page() {
                 </tr>
               ))}
             </tbody>
+
+            <Pagination
+              decrementDisabled={decrementDisabled}
+              incrementDisabled={incrementDisabled}
+              limit={limit}
+              page={page}
+              totalPages={totalPages}
+              setSearchParams={setSearchParams}
+            />
           </table>
         )}
       </section>
 
-      <Suspense
-      // fallback={
-      //   <Loading className="h-52 flex flex-col justify-center items-center" />
-      // }
-      >
+      <Suspense>
         <CreateFuelModal
           open={isCreateFuelModalOpen}
           onOpenChange={setIsCreateFuelModalOpen}
