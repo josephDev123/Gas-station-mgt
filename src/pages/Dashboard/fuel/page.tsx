@@ -85,63 +85,65 @@ export default function page() {
             {error.message}
           </div>
         ) : (
-          <table className="min-w-full border-collapse  border-gray-300 rounded-lg shadow-sm">
-            {data.fuels.length === 0 && (
+          <>
+            {data?.fuels?.length === 0 ? (
               <div className="flex flex-col h-52 justify-center items-center">
-                No fuel records found.
+                No Fuel records found.
               </div>
-            )}
+            ) : (
+              <table className="min-w-full border-collapse  border-gray-300 rounded-lg shadow-sm">
+                <thead className="bg-gray-100">
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <tr key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <th
+                          key={header.id}
+                          className="border border-gray-300 px-4 py-2 text-left text-nowrap"
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </thead>
 
-            <thead className="bg-gray-100">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <th
-                      key={header.id}
-                      className="border border-gray-300 px-4 py-2 text-left text-nowrap"
+                <tbody>
+                  {table.getRowModel().rows.map((row) => (
+                    <tr
+                      key={row.id}
+                      className="even:bg-gray-50 hover:bg-gray-100 transition-colors"
                     >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
+                      {row.getVisibleCells().map((cell) => (
+                        <td
+                          key={cell.id}
+                          className="border-b border-gray-300 px-4 py-2"
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
                           )}
-                    </th>
+                        </td>
+                      ))}
+                    </tr>
                   ))}
-                </tr>
-              ))}
-            </thead>
+                </tbody>
 
-            <tbody>
-              {table.getRowModel().rows.map((row) => (
-                <tr
-                  key={row.id}
-                  className="even:bg-gray-50 hover:bg-gray-100 transition-colors"
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <td
-                      key={cell.id}
-                      className="border-b border-gray-300 px-4 py-2"
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-
-            <Pagination
-              decrementDisabled={decrementDisabled}
-              incrementDisabled={incrementDisabled}
-              limit={limit}
-              page={page}
-              totalPages={totalPages}
-              setSearchParams={setSearchParams}
-            />
-          </table>
+                <Pagination
+                  decrementDisabled={decrementDisabled}
+                  incrementDisabled={incrementDisabled}
+                  limit={limit}
+                  page={page}
+                  totalPages={totalPages}
+                  setSearchParams={setSearchParams}
+                />
+              </table>
+            )}
+          </>
         )}
       </section>
 
