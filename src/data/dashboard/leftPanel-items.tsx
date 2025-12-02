@@ -34,7 +34,7 @@ export const leftPanel_items: IleftPanel_items[] = [
     icon: <FaGasPump className="size-4" />,
   },
   {
-    label: "Fuel-Pump",
+    label: "Assign Fuel",
     link: "/dashboard/assign-fuel-to-pump",
     icon: <MdAssignment className="size-4" />,
   },
