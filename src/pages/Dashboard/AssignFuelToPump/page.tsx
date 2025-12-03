@@ -10,12 +10,13 @@ import { IPump } from "../pump/type/IPump";
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
-import { pumpFColumnDef } from "./columnDefs/pumpColumnDef";
+import { pumpFColumnDef } from "./columnDefs/PumpfColumnDef";
 
 const fallbackData = [];
 
 export default function FuelToPumpPage() {
   const [globalFilter, setGlobal] = useState<any[]>([]);
+  const [searchGlobalFilter, setSearchGlobal] = useState<any[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const page = Number(searchParams.get("page") ?? "1");

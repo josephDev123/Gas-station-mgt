@@ -7,16 +7,15 @@ import { toast } from "sonner";
 import { IPump } from "../../pump/type/IPump";
 
 const DeleteModal = lazy(() => import("../../../../components/DeleteModal"));
-// const EditModal = lazy(() => import("./EditPump"));
+const AssignFuelModal = lazy(() => import("./AssignFuelModal"));
 
 export default function AssignFuelActionBtn({ row }: { row: Row<IPump> }) {
   const [open, setOpen] = useState<boolean>(false);
-  const [openEdit, setEditOpen] = useState<boolean>(false);
   const [editRow, setEditRow] = useState<Row<IPump> | undefined>(undefined);
-  const { mutate, isPending, data } = useMutateAction<
-    { data: IPump; msg: string },
-    null
-  >("delete", `pump/delete/${row?.original?.id}`);
+  // const { mutate, isPending, data } = useMutateAction<
+  //   { data: IPump; msg: string },
+  //   null
+  // >("delete", `pump/delete/${row?.original?.id}`);
   // const handleDelete = () => {
   //   mutate(null, {
   //     onError: (error) => {
@@ -44,7 +43,7 @@ export default function AssignFuelActionBtn({ row }: { row: Row<IPump> }) {
           type="button"
           onClick={() => {
             setEditRow(row);
-            setEditOpen(true);
+            setOpen(true);
           }}
           className="px-4 py-1 border shadow-sm rounded-lg border-green-300 "
         >
@@ -53,7 +52,7 @@ export default function AssignFuelActionBtn({ row }: { row: Row<IPump> }) {
       </div>
 
       <Suspense>
-        {/* <EditModal row={editRow} open={openEdit} setOpen={setEditOpen} /> */}
+        <AssignFuelModal row={editRow} open={open} setOpen={setOpen} />
       </Suspense>
     </>
   );
