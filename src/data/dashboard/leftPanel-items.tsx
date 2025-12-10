@@ -8,6 +8,7 @@ import { FaTasks } from "react-icons/fa";
 import { BadgeDollarSign, Banknote } from "lucide-react";
 import { ChartNoAxesCombined } from "lucide-react";
 import { MdAssignment } from "react-icons/md";
+import { MdOutlineAssignmentTurnedIn } from "react-icons/md";
 
 interface IleftPanel_items {
   label: string;
@@ -36,6 +37,12 @@ export const leftPanel_items: IleftPanel_items[] = [
   {
     label: "Assign Fuel",
     link: "/dashboard/assign-fuel-to-pump",
+    icon: <MdOutlineAssignmentTurnedIn className="size-4" />,
+  },
+
+  {
+    label: "Assigned List",
+    link: "/dashboard/assign-fuel-pump",
     icon: <MdAssignment className="size-4" />,
   },
 

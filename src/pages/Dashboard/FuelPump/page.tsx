@@ -6,15 +6,15 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useQueryFacade } from "@/hooks/useFetch";
-import { IPump } from "../pump/type/IPump";
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
-import { pumpFColumnDef } from "./columnDefs/PumpfColumnDef";
+import { FuelPumpColumnDef } from "./columnDef/FuelPumpColumnDef";
+import { PumpFuelItem, PumpFuelResponse } from "./type/IFuelPump";
 
 const fallbackData = [];
 
-export default function FuelToPumpPage() {
+export default function FuelPumpPage() {
   const [globalFilter, setGlobal] = useState<any[]>([]);
   const [searchGlobalFilter, setSearchGlobal] = useState<any[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,13 +23,13 @@ export default function FuelToPumpPage() {
   const limit = Number(searchParams.get("limit") ?? "10");
 
   const { isLoading, isError, error, data } = useQueryFacade<
-    IPump[],
+    PumpFuelResponse[],
     Error,
     string | object | number,
-    { PumpQueryPaginate: IPump[]; totalCount: number; page: number }
-  >(["fuelPump", { page }], `pump/find?page=${page}&limit=${limit}`);
-
-  const totalPages = data?.PumpQueryPaginate
+    { PumpFuelData: PumpFuelItem[]; totalCount: number; page: number }
+  >(["fuelPumpL", { page }], `pump-fuel/find?page=${page}&limit=${limit}`);
+  console.log(data);
+  const totalPages = data?.PumpFuelData
     ? Math.ceil(data.totalCount / limit)
     : 0;
 
@@ -37,8 +37,8 @@ export default function FuelToPumpPage() {
   const incrementDisabled = page >= totalPages;
 
   const table = useReactTable({
-    columns: pumpFColumnDef,
-    data: data?.PumpQueryPaginate ?? fallbackData,
+    columns: FuelPumpColumnDef,
+    data: data?.PumpFuelData ?? fallbackData,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     state: { globalFilter },
@@ -48,11 +48,11 @@ export default function FuelToPumpPage() {
   return (
     <main className="flex flex-col w-full h-full">
       <section className="flex flex-col space-y-3">
-        <h1 className="text-2xl font-bold">Assign Fuel to Pump</h1>
+        <h1 className="text-2xl font-bold">Fuel & Pump List</h1>
         <p className="text-gray-600 text-sm">
-          This page allows you to assign specific fuel types (e.g., Diesel,
-          Petrol, Kerosene) to individual pumps at the fuel station, ensuring
-          the correct fuel is dispensed from each pump.
+          This page displays a list of fuel types that have been assigned to
+          each pump. You can view the pump details, the associated fuel, and the
+          volume allocated to each pump.
         </p>
       </section>
       <section className="flex flex-col  space-y-2">
@@ -63,7 +63,7 @@ export default function FuelToPumpPage() {
           onChange={(e) => table.setGlobalFilter(String(e.target.value))}
           className="p-2 rounded-md border max-w-80 my-4"
         />
-        <h3 className="font-semibold mt-6">Assign Fuel to Pump 👇</h3>
+        {/* <h3 className="font-semibold mt-6">Assign Fuel to Pump 👇</h3> */}
         <section className="overflow-x-auto max-w-full  bg-white rounded-lg p-4">
           {isLoading ? (
             <div className="flex flex-col h-52 justify-center items-center">
@@ -75,7 +75,7 @@ export default function FuelToPumpPage() {
             </div>
           ) : (
             <>
-              {data?.PumpQueryPaginate?.length === 0 ? (
+              {data?.PumpFuelData?.length === 0 ? (
                 <div className="flex flex-col h-52 justify-center items-center">
                   No Pump records found.
                 </div>
@@ -136,17 +136,6 @@ export default function FuelToPumpPage() {
           )}
         </section>
       </section>
-      {/* <hr className="mt-4" />
-      <section className="flex flex-col  space-y-2">
-        <input
-          type="search"
-          name=""
-          placeholder="Search"
-          onChange={(e) => table.setGlobalFilter(String(e.target.value))}
-          className="p-2 rounded-md border max-w-80 my-4"
-        />
-        <h3 className="font-semibold mt-6">Assignment list 👇</h3>
-      </section> */}
     </main>
   );
 }
