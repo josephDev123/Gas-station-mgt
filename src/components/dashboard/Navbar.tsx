@@ -16,7 +16,7 @@ export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
     <section className=" flex items-center justify-between gap-3 bg-white p-4">
       <span className={`sm:hidden inline-flex items-center gap-2`}>
         <img src="./logo.png" alt="logo" className="size-7 rounded-md" />
-        <span className="font-medium text-sm">GS</span>
+        <span className="font-medium text-sm sm:block hidden">GS</span>
       </span>
 
       <div className="flex items-center gap-4  justify-end ms-auto">
@@ -29,7 +29,7 @@ export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
           <Dot className="absolute -left-0 -top-2.5 size-9 text-red-300" />
         </div>
         <div className="flex items-center gap-2">
-          <span className="truncate text-ellipsis max-w-40">
+          <span className="truncate text-ellipsis sm:max-w-40 w-24">
             {session.name}
           </span>
           <CustomAvatar
