@@ -11,7 +11,7 @@ export default function LeftPanel({ isShow }: ILeftPanel) {
   const router = useNavigate();
   const session = useAppSelector((state) => state.user);
   return (
-    <section className="flex flex-col justify-center w-full ">
+    <section className="flex flex-col justify-center w-full">
       <div className="flex flex-col justify-center w-full items-center">
         <CustomAvatar
           alt="profile pic"

@@ -16,6 +16,7 @@ import { protectedUserDashboard } from "./loader/protectUserDashboardLoader";
 import EmployeePage from "./pages/Dashboard/employee/page";
 import FuelToPumpPage from "./pages/Dashboard/AssignFuelToPump/page";
 import FuelPumpPage from "./pages/Dashboard/FuelPump/page";
+import NozzlePage from "./pages/Dashboard/nozzle/page";
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +42,7 @@ export const router = createBrowserRouter([
           { path: "pump", Component: Pump },
           { path: "assign-fuel-to-pump", Component: FuelToPumpPage },
           { path: "assign-fuel-pump", Component: FuelPumpPage },
+          { path: "nozzle", Component: NozzlePage },
           { path: "employee", Component: EmployeePage },
           { path: "task", Component: Task },
           { path: "sale", Component: Sale },

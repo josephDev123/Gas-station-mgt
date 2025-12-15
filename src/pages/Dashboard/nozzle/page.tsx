@@ -9,12 +9,15 @@ import { useQueryFacade } from "@/hooks/useFetch";
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
-import { FuelPumpColumnDef } from "./columnDef/FuelPumpColumnDef";
-import { PumpFuelItem, PumpFuelResponse } from "./type/IFuelPump";
+import { Button } from "@/components/ui/button";
+import CreateNozzle from "./components/CreateNozzle";
+import { Nozzle } from "./types/INozzle";
+import { NozzleColumnDef } from "./columnDef/NozzleColumnDef";
 
 const fallbackData = [];
 
-export default function FuelPumpPage() {
+export default function NozzlePage() {
+  const [isCreateNozzleOpen, SetIsCreateNozzleOpen] = useState(false);
   const [globalFilter, setGlobal] = useState<any[]>([]);
   const [searchGlobalFilter, setSearchGlobal] = useState<any[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,22 +26,22 @@ export default function FuelPumpPage() {
   const limit = Number(searchParams.get("limit") ?? "10");
 
   const { isLoading, isError, error, data } = useQueryFacade<
-    PumpFuelResponse[],
+    Nozzle[],
     Error,
     string | object | number,
-    { PumpFuelData: PumpFuelItem[]; totalCount: number; page: number }
-  >(["fuelPumpL", { page }], `pump-fuel/find?page=${page}&limit=${limit}`);
+    { nozzles: Nozzle[]; totalCount: number; page: number }
+  >(["pumpToNozzles", { page }], `nozzle/?page=${page}&limit=${limit}`);
+
   console.log(data);
-  const totalPages = data?.PumpFuelData
-    ? Math.ceil(data.totalCount / limit)
-    : 0;
+
+  const totalPages = data?.nozzles ? Math.ceil(data.totalCount / limit) : 0;
 
   const decrementDisabled = page <= 1;
   const incrementDisabled = page >= totalPages;
 
   const table = useReactTable({
-    columns: FuelPumpColumnDef,
-    data: data?.PumpFuelData ?? fallbackData,
+    columns: NozzleColumnDef,
+    data: data?.nozzles ?? fallbackData,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     state: { globalFilter },
@@ -48,22 +51,31 @@ export default function FuelPumpPage() {
   return (
     <main className="flex flex-col w-full h-full">
       <section className="flex flex-col space-y-3">
-        <h1 className="text-2xl font-bold">Fuel to Pump List</h1>
+        <h1 className="text-2xl font-bold">Nozzle</h1>
         <p className="text-gray-600 text-sm">
-          This page displays a list of fuel types that have been assigned to
-          each pump. You can view the pump details, the associated fuel, and the
-          volume allocated to each pump.
+          This page create nozzle, assign nozzle to pump, and displays assigned
+          nozzle to Pump.
         </p>
       </section>
       <section className="flex flex-col  space-y-2">
-        <input
-          type="search"
-          name=""
-          placeholder="Search"
-          onChange={(e) => table.setGlobalFilter(String(e.target.value))}
-          className="p-2 rounded-md border max-w-80 my-4"
-        />
-        {/* <h3 className="font-semibold mt-6">Assign Fuel to Pump 👇</h3> */}
+        <div className="flex items-center justify-between">
+          <input
+            type="search"
+            name=""
+            placeholder="Search"
+            //   onChange={(e) => table.setGlobalFilter(String(e.target.value))}
+            className="p-2 rounded-md border max-w-80 my-4"
+          />
+
+          <Button
+            onClick={() => SetIsCreateNozzleOpen(true)}
+            variant="default"
+            className="px-4 py-2 rounded-md  shadow-inner bg-green-500 hover:bg-green-600 text-white"
+          >
+            Create Nozzle
+          </Button>
+        </div>
+
         <section className="overflow-x-auto max-w-full  bg-white rounded-lg p-4">
           {isLoading ? (
             <div className="flex flex-col h-52 justify-center items-center">
@@ -75,7 +87,7 @@ export default function FuelPumpPage() {
             </div>
           ) : (
             <>
-              {data?.PumpFuelData?.length === 0 ? (
+              {data?.nozzles?.length === 0 ? (
                 <div className="flex flex-col h-52 justify-center items-center">
                   No Pump records found.
                 </div>
@@ -136,6 +148,11 @@ export default function FuelPumpPage() {
           )}
         </section>
       </section>
+
+      <CreateNozzle
+        open={isCreateNozzleOpen}
+        onOpenChange={SetIsCreateNozzleOpen}
+      />
     </main>
   );
 }

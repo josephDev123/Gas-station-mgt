@@ -41,8 +41,14 @@ export const leftPanel_items: IleftPanel_items[] = [
   },
 
   {
-    label: "Assigned List",
+    label: "fuel-pump",
     link: "/dashboard/assign-fuel-pump",
+    icon: <MdAssignment className="size-4" />,
+  },
+
+  {
+    label: "Nozzle",
+    link: "/dashboard/nozzle",
     icon: <MdAssignment className="size-4" />,
   },
 
