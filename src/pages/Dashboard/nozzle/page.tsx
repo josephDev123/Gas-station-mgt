@@ -58,7 +58,7 @@ export default function NozzlePage() {
         </p>
       </section>
       <section className="flex flex-col  space-y-2">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between">
           <input
             type="search"
             name=""

@@ -5,6 +5,7 @@ import { Menu } from "lucide-react";
 import { IoHome } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/lib/redux/hooks";
+import { images } from "@/utils/images";
 
 interface INavbar {
   mobileLeftPanelToggle: VoidFunction;
@@ -15,7 +16,7 @@ export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
   return (
     <section className=" flex items-center justify-between gap-3 bg-white p-4">
       <span className={`sm:hidden inline-flex items-center gap-2`}>
-        <img src="./logo.png" alt="logo" className="size-7 rounded-md" />
+        <img src={images.logo} alt="logo" className="size-7 rounded-md" />
         <span className="font-medium text-sm sm:block hidden">GS</span>
       </span>
 
@@ -34,7 +35,7 @@ export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
           </span>
           <CustomAvatar
             alt="logo"
-            src={"./avatar.png"}
+            src={images.avatar}
             className="border-2 object-cover sm:size-10 size-6"
           />
         </div>

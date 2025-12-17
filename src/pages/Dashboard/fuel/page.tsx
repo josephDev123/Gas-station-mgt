@@ -49,7 +49,7 @@ export default function page() {
   });
 
   return (
-    <main className="flex flex-col p-4">
+    <main className="flex flex-col">
       <section className="flex flex-col space-y-2">
         <h1 className="text-2xl font-bold">Fuel Management</h1>
         <p className="text-gray-600 text-sm">
@@ -75,7 +75,7 @@ export default function page() {
         </Button>
       </section>
 
-      <section className="overflow-x-auto max-w-full mt-5 bg-white rounded-lg p-4">
+      <section className="overflow-x-auto max-w-full mt-5 bg-white rounded-lg">
         {isLoading ? (
           <div className="flex flex-col h-52 justify-center items-center">
             <LoaderCircle className="animate-spin" />

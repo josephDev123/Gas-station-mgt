@@ -35,7 +35,7 @@ export default function AssignNozzleToUser() {
   >(["users"], `nozzle`);
   return (
     <section className="mt-3">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap gap-2 items-center justify-between">
         <div className="inline-flex gap-6 items-center ">
           <div className="w-full">
             <Label htmlFor="User">Select User</Label>
@@ -94,7 +94,7 @@ export default function AssignNozzleToUser() {
           variant="default"
           className="px-4 py-2 rounded-md  shadow-inner bg-green-500 hover:bg-green-600 text-white"
         >
-          assign Nozzle to User
+          assign Nozzle
         </Button>
       </div>
     </section>
