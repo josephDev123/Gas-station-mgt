@@ -11,7 +11,7 @@ export default function LeftPanel({ isShow }: ILeftPanel) {
   const router = useNavigate();
   const session = useAppSelector((state) => state.user);
   return (
-    <section className="flex flex-col justify-center w-full">
+    <section className="flex flex-col justify-center w-full h-full">
       <div className="flex flex-col justify-center w-full items-center">
         <CustomAvatar
           alt="profile pic"
@@ -26,7 +26,7 @@ export default function LeftPanel({ isShow }: ILeftPanel) {
         </div>
       </div>
       <hr className="my-3" />
-      <div className="flex flex-col  w-full justify-center items-center">
+      <div className="flex flex-col  w-full justify-center items-center ">
         {leftPanel_items.map((linkItem) => {
           return (
             <LeftPanelBtn

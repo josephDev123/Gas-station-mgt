@@ -1,5 +1,3 @@
-import React from "react";
-
-export default function page() {
-  return <div>Sale page</div>;
+export default function SalePage() {
+  return <div>TASK page</div>;
 }

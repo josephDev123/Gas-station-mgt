@@ -51,22 +51,20 @@ export const leftPanel_items: IleftPanel_items[] = [
     link: "/dashboard/nozzle",
     icon: <MdAssignment className="size-4" />,
   },
-
   {
-    label: "Employee",
-    link: "/dashboard/employee",
-    icon: <BsFillPeopleFill className="size-4" />,
-  },
-
-  {
-    label: "Task",
-    link: "/dashboard/task",
+    label: "nozzle user",
+    link: "/dashboard/nozzle-user",
     icon: <FaTasks className="size-4" />,
   },
   {
     label: "Sale",
     link: "/dashboard/sale",
     icon: <BadgeDollarSign className="size-4" />,
+  },
+  {
+    label: "Employee",
+    link: "/dashboard/employee",
+    icon: <BsFillPeopleFill className="size-4" />,
   },
 
   {
