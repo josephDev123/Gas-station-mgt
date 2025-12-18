@@ -36,7 +36,7 @@ export default function AssignNozzleToUser() {
   return (
     <section className="mt-3">
       <div className="flex flex-wrap gap-2 items-center justify-between">
-        <div className="inline-flex gap-6 items-center ">
+        <div className="inline-flex gap-6 items-center">
           <div className="w-full">
             <Label htmlFor="User">Select User</Label>
             <Select>
