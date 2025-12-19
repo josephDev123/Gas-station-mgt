@@ -5,8 +5,6 @@ import DashboardLayout from "./components/dashboard/Layout";
 import DashboardIndex from "./pages/Dashboard/Index/page";
 import Fuel from "./pages/Dashboard/fuel/page";
 import Pump from "./pages/Dashboard/pump/page";
-// import Task from "./pages/Dashboard/Sale/page";
-// import Sale from "./pages/Dashboard/nozzleToUser/page";
 import Customer from "./pages/Dashboard/customer/page";
 import Expenses from "./pages/Dashboard/expenses/page";
 import Analysis from "./pages/Dashboard/analysis/page";

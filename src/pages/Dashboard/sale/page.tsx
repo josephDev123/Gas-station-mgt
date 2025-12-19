@@ -1,3 +1,3 @@
 export default function SalePage() {
-  return <div>TASK page</div>;
+  return <div>sale page</div>;
 }

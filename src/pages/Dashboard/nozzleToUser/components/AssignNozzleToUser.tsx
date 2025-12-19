@@ -53,7 +53,8 @@ export default function AssignNozzleToUser() {
             </Select>
           </div>
 
-          <div>
+          <div className="flex flex-col items-center justify-center">
+            <p>Assign</p>
             <FaArrowRight />
           </div>
 
