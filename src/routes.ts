@@ -16,7 +16,7 @@ import FuelToPumpPage from "./pages/Dashboard/AssignFuelToPump/page";
 import FuelPumpPage from "./pages/Dashboard/FuelPump/page";
 import NozzlePage from "./pages/Dashboard/nozzle/page";
 import NozzleToUserPage from "./pages/Dashboard/nozzleToUser/page";
-import SalePage from "./pages/Dashboard/Sale/page";
+import SalePage from "./pages/Dashboard/sale/page";
 
 export const router = createBrowserRouter([
   {
