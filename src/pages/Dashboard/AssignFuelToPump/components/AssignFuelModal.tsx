@@ -30,6 +30,7 @@ import { IPump } from "../../pump/type/IPump";
 import { Row } from "@tanstack/react-table";
 import { useQueryFacade } from "@/hooks/useFetch";
 import { IFuel } from "../../fuel/type/IFuel";
+import { Link } from "react-router-dom";
 
 type IFormType = {
   fuelId: number;
@@ -139,6 +140,16 @@ export default function AssignFuelModal({
                         <small className="text-red-400">
                           Something went wrong
                         </small>
+                      ) : data.fuels.length <= 0 ? (
+                        <span className="inline-flex gap-2">
+                          No data.{" "}
+                          <Link
+                            to={"/dashboard/fuel"}
+                            className="underline decoration-blue-600"
+                          >
+                            Create Fuel
+                          </Link>
+                        </span>
                       ) : (
                         <>
                           {data?.fuels.map((fuelName) => (

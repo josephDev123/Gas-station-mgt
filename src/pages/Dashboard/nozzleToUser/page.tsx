@@ -11,9 +11,8 @@ import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AssignNozzleToUser from "./components/AssignNozzleToUser";
-// import CreateNozzle from "./components/CreateNozzle";
-// import { Nozzle } from "./types/INozzle";
-// import { NozzleColumnDef } from "./columnDef/NozzleColumnDef";
+import { NozzleToUser } from "./types/INozzleToUser";
+import { NozzleToUserDef } from "./columndef/NozzleToUserDef";
 
 const fallbackData = [];
 
@@ -27,22 +26,24 @@ export default function NozzleToUserPage() {
   const limit = Number(searchParams.get("limit") ?? "10");
 
   const { isLoading, isError, error, data } = useQueryFacade<
-    any[],
+    NozzleToUser[],
     Error,
     string | object | number,
-    { nozzles: any[]; totalCount: number; page: number }
-  >(["pumpToNozzles", { page }], `nozzle/?page=${page}&limit=${limit}`);
+    { NozzleToUser: NozzleToUser[]; totalCount: number; page: number }
+  >(["nozzleToUser", { page }], `nozzle-to-user/?page=${page}&limit=${limit}`);
 
   console.log(data);
 
-  const totalPages = data?.nozzles ? Math.ceil(data.totalCount / limit) : 0;
+  const totalPages = data?.NozzleToUser
+    ? Math.ceil(data.totalCount / limit)
+    : 0;
 
   const decrementDisabled = page <= 1;
   const incrementDisabled = page >= totalPages;
 
   const table = useReactTable({
-    columns: [],
-    data: data?.nozzles ?? fallbackData,
+    columns: NozzleToUserDef,
+    data: data?.NozzleToUser ?? fallbackData,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     state: { globalFilter },
@@ -57,10 +58,10 @@ export default function NozzleToUserPage() {
           This page assign nozzle to User, and displays assigned nozzle to User.
         </p>
       </section>
-      <section className="flex flex-col  space-y-2">
+      <section className="flex flex-col  space-y-5">
         <AssignNozzleToUser />
 
-        <section className="overflow-x-auto max-w-full  bg-white rounded-lg sm:p-4 p-2">
+        <section className="overflow-x-auto max-w-full  bg-white rounded-lg sm:p-4 p-2 ">
           {isLoading ? (
             <div className="flex flex-col h-52 justify-center items-center">
               <LoaderCircle className="animate-spin" />
@@ -71,7 +72,7 @@ export default function NozzleToUserPage() {
             </div>
           ) : (
             <>
-              {data?.nozzles?.length === 0 ? (
+              {data?.NozzleToUser?.length === 0 ? (
                 <div className="flex flex-col h-52 justify-center items-center">
                   No Pump records found.
                 </div>

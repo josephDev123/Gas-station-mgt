@@ -31,6 +31,7 @@ import { INozzleSchema, NozzleSchema } from "../schema/INozzle";
 import { useQueryFacade } from "@/hooks/useFetch";
 import { IPump } from "../../pump/type/IPump";
 import { LoaderCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const STATUS = ["ACTIVE", "INACTIVE"];
 const fuelTypes = ["DIESEL", "GASOLINE", "PMS", "LPG"];
@@ -144,7 +145,15 @@ export default function CreateNozzle({
                           Pump data failed. You can assign pump later
                         </small>
                       ) : pumpData.PumpQueryPaginate.length <= 0 ? (
-                        "No data yet. "
+                        <span className="inline-flex gap-2">
+                          No data.{" "}
+                          <Link
+                            to={"/dashboard/pump"}
+                            className="underline decoration-blue-600"
+                          >
+                            Create Pump
+                          </Link>
+                        </span>
                       ) : (
                         <>
                           {pumpData.PumpQueryPaginate.map((pump) => (

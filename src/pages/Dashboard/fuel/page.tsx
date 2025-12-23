@@ -10,9 +10,7 @@ import { IFuel } from "./type/IFuel";
 import { LoaderCircle } from "lucide-react";
 import { lazy, Suspense, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { MdExpandLess } from "react-icons/md";
 import { useSearchParams } from "react-router-dom";
-import { url } from "node:inspector/promises";
 import Pagination from "@/components/commons/Pagination";
 
 const CreateFuelModal = lazy(() => import("./components.tsx/CreateFuelModal"));

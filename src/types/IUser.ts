@@ -3,10 +3,10 @@ export interface IUser {
   email: string;
   name: string;
   role: "ATTENDANT" | "ADMIN";
-  profile?: {
+  profile: {
     id: number | undefined;
     avatar: String;
     address: String;
     phone_no: String;
-  };
+  } | null;
 }
