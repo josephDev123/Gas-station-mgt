@@ -70,8 +70,8 @@ export default function EditNozzleToUser({
     isPending,
     isError: nozzleToUserError,
   } = useMutateAction<any[], INozzleUserAssign>(
-    "post",
-    `edit/${row?.original?.id}`
+    "put",
+    `nozzle-to-user/edit/${row?.original?.id}`
   );
 
   const handleUpdateUserAssignment = async () => {
@@ -85,6 +85,7 @@ export default function EditNozzleToUser({
         onSuccess: async (data) => {
           await queryClient.invalidateQueries({ queryKey: ["nozzleToUser"] });
           toast.success("Nozzle assigned to User successfully");
+          setOpen(false);
         },
         onError: (error) => {
           toast.error(

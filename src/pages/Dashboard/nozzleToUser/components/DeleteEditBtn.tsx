@@ -16,26 +16,27 @@ export default function DeleteEditBtn({ row }: { row: Row<any> }) {
   const { mutate, isPending } = useMutateAction<
     { data: any; msg: string },
     null
-  >("delete", `nozzle/delete/${row?.original?.id}`);
+  >("delete", `nozzle-to-user/delete/${row?.original?.id}`);
   const handleDelete = () => {
-    mutate(null, {
-      onError: (error) => {
-        const errMessage =
-          typeof error?.message === "object" && error?.message !== null
-            ? error?.message
-            : "An error occurred";
-        toast.error(errMessage);
-        return;
-      },
-      onSuccess: async (data) => {
-        await queryClient.invalidateQueries({
-          queryKey: ["pumpToNozzles"],
-        });
-        toast.success(data.msg);
-        setTimeout(() => setOpen(false), 1000);
-        return;
-      },
-    });
+    alert("coming soon ...");
+    // mutate(null, {
+    //   onError: (error) => {
+    //     const errMessage =
+    //       typeof error?.message === "object" && error?.message !== null
+    //         ? error?.message
+    //         : "An error occurred";
+    //     toast.error(errMessage);
+    //     return;
+    //   },
+    //   onSuccess: async (data) => {
+    //     await queryClient.invalidateQueries({
+    //       queryKey: ["nozzleToUser"],
+    //     });
+    //     toast.success(data.msg || "Deleted successfully");
+    //     setTimeout(() => setOpen(false), 1000);
+    //     return;
+    //   },
+    // });
   };
 
   return (
