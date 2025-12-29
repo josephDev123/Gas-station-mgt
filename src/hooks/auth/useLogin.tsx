@@ -48,7 +48,7 @@ export function useLogin() {
     mutate(payload, {
       onSuccess: (data) => {
         console.log(data);
-        toast.success("User register successful");
+        toast.success("User login successful");
         dispatch(setUser(data.data));
         if (!remember) {
           localStorage.removeItem("rememberMeData");
