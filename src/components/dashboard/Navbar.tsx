@@ -14,7 +14,7 @@ export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
   const navigate = useNavigate();
   const session = useAppSelector((state) => state.user);
   return (
-    <section className=" flex items-center justify-between gap-3 bg-white p-4">
+    <section className="h-[80px] flex items-center justify-between gap-3 bg-white p-4 drop-shadow-md">
       <span className={`sm:hidden inline-flex items-center gap-2`}>
         <img src={images.logo} alt="logo" className="size-7 rounded-md" />
         <span className="font-medium text-sm sm:block hidden">GS</span>

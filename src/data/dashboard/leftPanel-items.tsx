@@ -68,8 +68,8 @@ export const leftPanel_items: IleftPanel_items[] = [
   },
 
   {
-    label: "Customer",
-    link: "/dashboard/customer",
+    label: "Staff",
+    link: "/dashboard/staff",
     icon: <IoPersonSharp className="size-4" />,
   },
 

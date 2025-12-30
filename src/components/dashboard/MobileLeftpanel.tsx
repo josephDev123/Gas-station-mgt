@@ -3,6 +3,7 @@ import CustomAvatar from "../CustomAvatar";
 import LeftPanelBtn from "./LeftPanelBtn";
 import { useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 interface IMobileLeftPanel {
   isShow: boolean;
@@ -10,6 +11,7 @@ interface IMobileLeftPanel {
 }
 export default function MobileLeftpanel({ isShow, close }: IMobileLeftPanel) {
   const router = useNavigate();
+  const session = useAppSelector((state) => state.user);
   return (
     <section
       className={`sm:hidden flex ms-auto items-start h-full  w-fit transition-transform duration-300  
@@ -27,8 +29,8 @@ export default function MobileLeftpanel({ isShow, close }: IMobileLeftPanel) {
             className={`size-12 border rounded-md object-fill`}
           />
           <div className={`flex flex-col items-center`}>
-            <strong>Name</strong>
-            <small>Role</small>
+            <strong>{session.name}</strong>
+            <small>{session.role}</small>
           </div>
         </div>
         <hr className="my-3" />

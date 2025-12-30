@@ -3,6 +3,7 @@ import CustomAvatar from "../CustomAvatar";
 import LeftPanelBtn from "./LeftPanelBtn";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/lib/redux/hooks";
+import { images } from "@/utils/images";
 
 interface ILeftPanel {
   isShow: boolean;
@@ -11,11 +12,15 @@ export default function LeftPanel({ isShow }: ILeftPanel) {
   const router = useNavigate();
   const session = useAppSelector((state) => state.user);
   return (
-    <section className="flex flex-col justify-center w-full h-full">
-      <div className="flex flex-col justify-center w-full items-center">
+    <section className="flex flex-col justify-center w-full min-h-full ">
+      <div
+        className={`flex flex-col justify-center w-full items-center ${
+          isShow ? "pt-16" : "pt-0"
+        }`}
+      >
         <CustomAvatar
           alt="profile pic"
-          src="./avatar.png"
+          src={images.avatar}
           className={`${
             isShow ? "size-16" : "size-8"
           }  border rounded-md object-fill`}

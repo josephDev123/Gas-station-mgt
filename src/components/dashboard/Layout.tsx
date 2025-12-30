@@ -52,11 +52,11 @@ export default function DashboardLayout() {
             />
           </div>
           <hr />
-          <div className="flex flex-col justify-center items-center py-3 w-full overflow-y-auto  ">
+          <div className="flex flex-col h-full justify-center items-center py-3 w-full overflow-y-auto  ">
             <LeftPanel isShow={isShow} />
           </div>
         </div>
-        <div className="w-full h-full overflow-x-auto">
+        <div className="w-full h-full relative overflow-x-auto">
           <Navbar mobileLeftPanelToggle={handleToggleMobileLeftPanel} />
           <OverlayContainer
             show={isMobileLeftPanel}
@@ -69,7 +69,7 @@ export default function DashboardLayout() {
             />
           </OverlayContainer>
 
-          <div className="w-full h-fit p-4  overflow-y-auto">
+          <div className="w-full h-[calc(100vh-80px)] p-4  overflow-y-auto">
             <Outlet />
           </div>
         </div>
