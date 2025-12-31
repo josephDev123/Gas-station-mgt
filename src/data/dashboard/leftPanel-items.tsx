@@ -61,16 +61,17 @@ export const leftPanel_items: IleftPanel_items[] = [
     link: "/dashboard/sale",
     icon: <BadgeDollarSign className="size-4" />,
   },
-  {
-    label: "Employee",
-    link: "/dashboard/employee",
-    icon: <BsFillPeopleFill className="size-4" />,
-  },
 
   {
     label: "Staff",
     link: "/dashboard/staff",
     icon: <IoPersonSharp className="size-4" />,
+  },
+
+  {
+    label: "Customer",
+    link: "/dashboard/customer",
+    icon: <BsFillPeopleFill className="size-4" />,
   },
 
   {

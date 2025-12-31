@@ -18,7 +18,6 @@ const fallbackData = [];
 export default function SalePage() {
   const [isCreateNozzleOpen, SetIsCreateNozzleOpen] = useState(false);
   const [globalFilter, setGlobal] = useState<any[]>([]);
-  const [searchGlobalFilter, setSearchGlobal] = useState<any[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const page = Number(searchParams.get("page") ?? "1");
