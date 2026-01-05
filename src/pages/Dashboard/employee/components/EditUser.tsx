@@ -46,7 +46,7 @@ export default function EditUser({ row, open, setOpen }: EditUserProps) {
   const { mutate, isPending } = useMutateAction<
     IUserSchema & { msg: string },
     IUserSchema
-  >("put", `auth/user/update/${row?.original?.id}`);
+  >("patch", `auth/create-update/${row?.original?.id}`);
 
   const file = watch("profile.avatar")?.[0];
 
@@ -59,7 +59,14 @@ export default function EditUser({ row, open, setOpen }: EditUserProps) {
 
   const handleOnSubmit: SubmitHandler<IUserSchema> = (data) => {
     // console.log(data);
-    mutate(data, {
+    const formData = new FormData();
+    formData.set("profile-pic", file);
+    formData.set("email", data.email);
+    formData.set("name", data.name);
+    formData.set("role", data.role);
+    formData.set("address", data.profile.address);
+    formData.set("phone_no", data.profile.phone_no);
+    mutate(formData as any, {
       onError: (error) => {
         console.log("error", error);
         toast.error(error.message || error.toString());
@@ -123,9 +130,11 @@ export default function EditUser({ row, open, setOpen }: EditUserProps) {
                   className="absolute bottom-0 -right-5 text-xl cursor-pointer"
                 />
               </div>
+            </div>
 
+            <div className="mx-auto mt-0">
               {errors.profile?.avatar && (
-                <small className="text-red-400">
+                <small className="text-red-400 ">
                   {errors.profile.avatar.message}
                 </small>
               )}
@@ -134,7 +143,7 @@ export default function EditUser({ row, open, setOpen }: EditUserProps) {
             <div className="hidden">
               <Label htmlFor="profile-avatar">Attach profile image</Label>
 
-              <Input
+              <input
                 type="file"
                 id="profile-avatar"
                 accept="image/*"

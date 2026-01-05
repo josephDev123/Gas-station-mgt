@@ -1,7 +1,16 @@
 import { z } from "zod";
 
+// export const ProfileSchema = z.object({
+//   avatar: z.string().url().or(z.instanceof(File)).optional(),
+//   address: z.string().optional(),
+//   phone_no: z.string().optional(),
+// });
+
 export const ProfileSchema = z.object({
-  avatar: z.string().url().or(z.instanceof(File)).optional(),
+  avatar: z
+    .union([z.string().url(), z.instanceof(File)])
+    .optional()
+    .transform((files) => (files instanceof FileList ? files[0] : files)),
   address: z.string().optional(),
   phone_no: z.string().optional(),
 });

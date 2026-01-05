@@ -3,7 +3,7 @@ import { axiosInstance } from "@/lib/axiosInstance";
 import { AxiosErrorHandler } from "@/utils/axiosErrorHandler";
 
 export const useMutateAction = <TData, TVariables>(
-  method: "post" | "put" | "delete" | "put",
+  method: "post" | "put" | "delete" | "patch",
   url: string,
   options?: UseMutationOptions<TData, Error, TVariables>
 ) => {

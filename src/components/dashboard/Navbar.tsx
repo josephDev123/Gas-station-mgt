@@ -6,6 +6,7 @@ import { IoHome } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { images } from "@/utils/images";
+import DropDownProfileAndLogoutHOC from "./DropDownProfileAndLogoutHOC";
 
 interface INavbar {
   mobileLeftPanelToggle: VoidFunction;
@@ -13,6 +14,16 @@ interface INavbar {
 export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
   const navigate = useNavigate();
   const session = useAppSelector((state) => state.user);
+
+  const dropdownElement = DropDownProfileAndLogoutHOC({
+    Component: () => (
+      <CustomAvatar
+        alt="logo"
+        src={images.avatar}
+        className="border-2 object-cover sm:size-10 size-6 cursor-pointer"
+      />
+    ),
+  });
   return (
     <section className="h-[80px] flex items-center justify-between gap-3 bg-white p-4 drop-shadow-md">
       <span className={`sm:hidden inline-flex items-center gap-2`}>
@@ -33,11 +44,13 @@ export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
           <span className="truncate text-ellipsis sm:max-w-40 w-24">
             {session.name}
           </span>
-          <CustomAvatar
+          {/* <CustomAvatar
             alt="logo"
             src={images.avatar}
-            className="border-2 object-cover sm:size-10 size-6"
-          />
+            className="border-2 object-cover sm:size-10 size-6 cursor-pointer"
+          /> */}
+
+          {dropdownElement}
         </div>
         <Menu
           onClick={mobileLeftPanelToggle}
