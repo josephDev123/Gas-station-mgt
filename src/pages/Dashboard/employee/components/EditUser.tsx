@@ -16,7 +16,7 @@ import { useMutateAction } from "@/hooks/useMutation";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import Loading from "@/components/Loading";
 import toast from "react-hot-toast";
 import { queryClient } from "@/App";
@@ -43,24 +43,35 @@ export default function EditUser({ row, open, setOpen }: EditUserProps) {
   } = useForm<IUserSchema>({
     resolver: zodResolver(UserSchema),
   });
+  const [file, setFile] = useState<File | string | null>(null);
+
   const { mutate, isPending } = useMutateAction<
     IUserSchema & { msg: string },
     IUserSchema
   >("patch", `auth/create-update/${row?.original?.id}`);
 
-  const file = watch("profile.avatar")?.[0];
+  // const file = watch("profile.avatar")?.[0];
 
-  const existingAvatar = row?.original?.profile?.avatar ?? images.avatar;
+  const existingAvatar =
+    file && file instanceof File
+      ? URL.createObjectURL(file)
+      : typeof file === "string"
+      ? row?.original?.profile?.avatar
+      : images.avatar;
 
-  const previewImage = file ? URL.createObjectURL(file) : existingAvatar;
+  const previewImage = existingAvatar;
 
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
 
   const handleOnSubmit: SubmitHandler<IUserSchema> = (data) => {
-    // console.log(data);
+    console.log(data);
+    console.log(file);
     const formData = new FormData();
-    formData.set("profile-pic", file);
+    if (file && file instanceof File) {
+      formData.append("profile-pic", file);
+    }
+
     formData.set("email", data.email);
     formData.set("name", data.name);
     formData.set("role", data.role);
@@ -96,8 +107,10 @@ export default function EditUser({ row, open, setOpen }: EditUserProps) {
     setValue("profile.phone_no", row?.original?.profile?.phone_no || "");
   }, [open]);
 
+  useEffect(() => setFile(row?.original?.profile?.avatar), [open]);
+
   useEffect(() => {
-    if (!file) return;
+    if (!file || !(file instanceof File)) return;
 
     const objectUrl = URL.createObjectURL(file);
     return () => URL.revokeObjectURL(objectUrl);
@@ -133,11 +146,11 @@ export default function EditUser({ row, open, setOpen }: EditUserProps) {
             </div>
 
             <div className="mx-auto mt-0">
-              {errors.profile?.avatar && (
-                <small className="text-red-400 ">
-                  {errors.profile.avatar.message}
-                </small>
-              )}
+              {/* {errors.profile?.avatar && (
+                <small className="text-red-400 "> */}
+              {/* {errors.profile.avatar?.message || "Invalid file"} */}
+              {/* </small>
+              )} */}
             </div>
 
             <div className="hidden">
@@ -145,13 +158,15 @@ export default function EditUser({ row, open, setOpen }: EditUserProps) {
 
               <input
                 type="file"
+                ref={fileRef}
+                onChange={(e) => setFile(e.target.files[0])}
                 id="profile-avatar"
                 accept="image/*"
-                {...register("profile.avatar")}
-                ref={(el) => {
-                  register("profile.avatar").ref(el);
-                  fileRef.current = el;
-                }}
+                // {...register("profile.avatar")}
+                // ref={(el) => {
+                //   register("profile.avatar").ref(el);
+                //   fileRef.current = el;
+                // }}
               />
             </div>
 

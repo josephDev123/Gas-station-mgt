@@ -27,7 +27,7 @@ export default function Staff() {
     string | object | number
   >(["staffs"], `auth/users?page=${page}&limit=${limit}`);
 
-  console.log("Employee Data:", data);
+  // console.log("Employee Data:", data);
 
   const totalPages = data?.Users ? Math.ceil(data.totalCount / limit) : 0;
 

@@ -13,7 +13,7 @@ export const usersColumnDef: ColumnDef<IUser>[] = [
     accessorKey: "profile.avatar",
     cell: ({ row }) => (
       <>
-        {!row?.original?.profile?.avatar.trim() ? (
+        {!row?.original?.profile?.avatar?.trim() ? (
           <div className="max-w-12 h-12 rounded-full overflow-hidden bg-gray-200 font-bold flex items-center justify-center">
             {row.original?.name.charAt(0).toUpperCase() || ""}
             {row.original?.name.charAt(1).toUpperCase() || ""}

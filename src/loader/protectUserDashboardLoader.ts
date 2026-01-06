@@ -1,18 +1,15 @@
+import { redirect } from "react-router-dom";
 import { store } from "@/lib/redux/store";
 import { isAuthenticated } from "@/utils/isUserAuthenticated";
-import { Navigate } from "react-router-dom";
 
 export function protectedUserDashboard() {
   const user = store.getState().user;
-  console.log(user);
+
   const isAuth = isAuthenticated(user);
 
-  if (!user) {
-    Navigate({ to: "/auth", state: { headingTo: "./dashboard" } });
-    return;
+  if (!user?.id || !isAuth) {
+    throw redirect("/auth?auth_type=login");
   }
-  if (!isAuth) {
-    Navigate({ to: "/auth", state: { headingTo: "./dashboard" } });
-    return;
-  }
+
+  return null;
 }
