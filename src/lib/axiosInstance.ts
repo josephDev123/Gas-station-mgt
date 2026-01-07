@@ -59,12 +59,14 @@ axiosInstance.interceptors.response.use(
       // console.log(access_token);
 
       // Redirect to login page if unauthorized
-      toast.error("session expired", { position: "top-right" });
+      toast.error("You don’t have permission to perform this action", {
+        position: "top-right",
+      });
       //   store.dispatch(logout());
       // await persistor.purge();
-      setTimeout(() => {
-        window.location.href = "/auth?auth_type=login";
-      }, 1000);
+      // setTimeout(() => {
+      //   window.location.href = "/auth?auth_type=login";
+      // }, 1000);
 
       // return axiosInstance(originalRequest);
       return Promise.reject(error);

@@ -20,7 +20,7 @@ export default function LeftPanel({ isShow }: ILeftPanel) {
       >
         <CustomAvatar
           alt="profile pic"
-          src={images.avatar}
+          src={(session?.profile?.avatar || images.avatar).toString()}
           className={`${
             isShow ? "size-16" : "size-8"
           }  border rounded-md object-fill`}

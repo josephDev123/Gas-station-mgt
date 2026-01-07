@@ -10,6 +10,9 @@ const initialState: IUser = {
   profile: {
     id: undefined,
     avatar: "",
+    avatarMetadata: {
+      public_id: "",
+    },
     address: "",
     phone_no: "",
   },

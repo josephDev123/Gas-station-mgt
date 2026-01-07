@@ -14,12 +14,13 @@ interface INavbar {
 export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
   const navigate = useNavigate();
   const session = useAppSelector((state) => state.user);
+  console.log(session);
 
   const dropdownElement = DropDownProfileAndLogoutHOC({
     Component: () => (
       <CustomAvatar
         alt="logo"
-        src={images.avatar}
+        src={(session?.profile?.avatar || images.avatar).toString()}
         className="border-2 object-cover sm:size-10 size-6 cursor-pointer"
       />
     ),

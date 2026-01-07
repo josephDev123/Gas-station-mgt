@@ -282,7 +282,7 @@ export default function EditUser({ row, open, setOpen }: EditUserProps) {
                 className="inline-flex gap-2 items-center "
               >
                 {isPending && <Loading className="text-yellow-400 text-3xl" />}
-                Create
+                Update
               </Button>
               <DialogClose asChild>
                 <Button ref={closeBtnRef} type="button" variant="destructive">
