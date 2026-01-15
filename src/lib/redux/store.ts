@@ -16,7 +16,7 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  // whitelist: ["signUpRole", "uploadProjectSaveAsDraft", "userToken", "users"],
+  whitelist: ["users"],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

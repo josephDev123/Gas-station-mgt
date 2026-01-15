@@ -11,6 +11,7 @@ export interface ISale {
   User: User | null;
   Nozzle: Nozzle | null;
   PumpFuel: PumpFuel | null;
+  customerName: string | null;
 }
 
 export interface User {

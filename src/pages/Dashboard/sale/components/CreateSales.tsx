@@ -19,8 +19,9 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useMutateAction } from "@/hooks/useMutation";
 import { IApiCreateSchema } from "../types/IApiCreate";
-import { queryClient } from "@/App";
+// import { queryClient } from "@/App";
 import Loading from "@/components/Loading";
+import { useQueryClient } from "@tanstack/react-query";
 
 export type ICreateSalesPayloadSchema = Omit<
   IApiCreateSchema,
@@ -33,6 +34,9 @@ export default function CreateSales() {
   const [fuelPumpId, setFuelPumpId] = useState(null);
   const [litreSold, setLitreSold] = useState(null);
   const [pricePerLiter, setPricePerLiter] = useState(null);
+  const [customerName, setCustomerName] = useState("");
+
+  const queryClient = useQueryClient();
 
   const { isLoading, isError, error, data } = useQueryFacade<
     Nozzle[],
@@ -82,6 +86,7 @@ export default function CreateSales() {
       pump_fuel_id: Number(fuelPumpId),
       liter_sold: Number(litreSold),
       price_per: Number(pricePerLiter),
+      customerName: customerName,
     };
 
     mutate(payload, {
@@ -210,6 +215,16 @@ export default function CreateSales() {
             onChange={(e) => setLitreSold(Number(e.target.value))}
             id="litre_sold"
             placeholder="Litre sold"
+          />
+        </div>
+
+        <div className=" w-full  items-center sm:w-[250px]">
+          <Label htmlFor="customerName">Customer Name</Label>
+          <Input
+            type="text"
+            onChange={(e) => setCustomerName(e.target.value)}
+            id="customerName"
+            placeholder="Enter Customer Name"
           />
         </div>
 

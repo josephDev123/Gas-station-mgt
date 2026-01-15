@@ -6,19 +6,22 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes";
 import { Provider } from "react-redux";
-import { store } from "./lib/redux/store";
+import { persistor, store } from "./lib/redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 export const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <Provider store={store}>
-      <TooltipProvider>
-        <Sonner />
-        <RouterProvider router={router} />
-      </TooltipProvider>
-      <Toaster position="top-right" />
-    </Provider>
+    <PersistGate loading={null} persistor={persistor}>
+      <Provider store={store}>
+        <TooltipProvider>
+          <Sonner />
+          <RouterProvider router={router} />
+        </TooltipProvider>
+        <Toaster position="top-right" />
+      </Provider>
+    </PersistGate>
   </QueryClientProvider>
 );
 

@@ -73,6 +73,15 @@ export const salesColumndef: ColumnDef<ISale>[] = [
   },
 
   {
+    header: "Customer Name",
+    cell: ({ row }) => (
+      <div className="max-w-52 truncate capitalize">
+        {row?.original?.customerName ?? "N/A"}
+      </div>
+    ),
+  },
+
+  {
     header: "Fuel name Sold",
     cell: ({ row }) => (
       <div className="max-w-52 truncate capitalize">

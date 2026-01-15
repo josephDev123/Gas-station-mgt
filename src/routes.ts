@@ -32,12 +32,8 @@ export const router = createBrowserRouter([
   },
 
   {
-    // Component: ProtectedUserDashboard,
-    // loader: () => protectedUserDashboard,
-    // children: [
-    // {
     path: "/dashboard",
-    loader: protectedUserDashboard,
+    // loader: protectedUserDashboard,
     Component: DashboardLayout,
     children: [
       { index: true, Component: DashboardIndex },
@@ -55,8 +51,7 @@ export const router = createBrowserRouter([
       { path: "analysis", Component: ComingSoon },
     ],
   },
-  // ],
-  // },
+
   {
     path: "*",
     Component: NotFound,

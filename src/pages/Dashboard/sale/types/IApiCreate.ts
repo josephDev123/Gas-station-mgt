@@ -6,6 +6,7 @@ export type IApiCreateSchema = {
   price_per: number;
   id: number;
   total_price_calc: number;
+  customerName: string;
   createdAt: Date;
   updatedAt: Date;
 };
