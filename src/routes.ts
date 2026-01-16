@@ -47,7 +47,7 @@ export const router = createBrowserRouter([
       { path: "nozzle-user", Component: NozzleToUserPage },
       { path: "sale", Component: SalePage },
       { path: "customer", Component: ComingSoon },
-      { path: "expenses", Component: ComingSoon },
+      { path: "expenses", Component: Expenses },
       { path: "analysis", Component: ComingSoon },
     ],
   },
