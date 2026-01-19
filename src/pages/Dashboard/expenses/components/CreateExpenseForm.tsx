@@ -23,15 +23,13 @@ import { useMutateAction } from "@/hooks/useMutation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller } from "react-hook-form";
-import { Dispatch, SetStateAction, useRef } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 import Loading from "@/components/Loading";
 import toast from "react-hot-toast";
-import { queryClient } from "@/App";
+// import { queryClient } from "@/App";
 import { expenseSchema, IExpenseFormSchema } from "../schema/CreateExpense";
 import { Textarea } from "@/components/ui/textarea";
-
-const STATUS = ["ACTIVE", "INACTIVE"];
-const fuelTypes = ["DIESEL", "GASOLINE", "PMS", "LPG"];
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ICreateFuelModalProps {
   open: boolean;
@@ -41,6 +39,9 @@ export default function CreateExpenseForm({
   open,
   onOpenChange,
 }: ICreateFuelModalProps) {
+  const [file, setFile] = useState<File | null>(null);
+  console.log(file);
+  const queryClient = useQueryClient();
   const {
     handleSubmit,
     control,
@@ -52,13 +53,26 @@ export default function CreateExpenseForm({
   const { mutate, isPending, isError, error, data } = useMutateAction<
     IExpenseFormSchema & { msg: string },
     IExpenseFormSchema
-  >("post", "nozzle/create");
+  >("post", "expenses/create");
 
   const closeBtnRef = useRef<HTMLButtonElement>(null);
 
   const handleOnSubmit: SubmitHandler<IExpenseFormSchema> = (data) => {
-    console.log(data);
-    mutate(data, {
+    const fileSize = file ? file.size / 1024 / 1024 : 0; // in MB
+    if (file && fileSize > 5) {
+      toast.error("File size should be less than 5MB");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("amount", data.amount.toString());
+    formData.append("category", data.category);
+    formData.append("description", data.description);
+
+    if (file && fileSize <= 5) {
+      formData.append("file", file);
+    }
+
+    mutate(formData as unknown as IExpenseFormSchema, {
       onError: async (error) => {
         console.log(error);
         toast.error(error.message);
@@ -68,7 +82,7 @@ export default function CreateExpenseForm({
         console.log(data.msg);
         toast.success(data.msg);
         await queryClient.invalidateQueries({
-          queryKey: ["pumpToNozzles"],
+          queryKey: ["expenses"],
           //   exact: true,
         });
         closeBtnRef.current?.click();
@@ -77,6 +91,11 @@ export default function CreateExpenseForm({
     });
   };
 
+  const handleOnChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setFile(event.target.files[0]);
+    }
+  };
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[90%] sm:max-w-[500px] max-h-[80vh] flex flex-col">
@@ -96,6 +115,7 @@ export default function CreateExpenseForm({
                 Amount
               </Label>
               <Input
+                type="number"
                 id="amount"
                 {...register("amount")}
                 placeholder="Enter the Amount"
@@ -163,6 +183,24 @@ export default function CreateExpenseForm({
                   {errors.description.message}
                 </small>
               )}
+            </div>
+
+            <div className="grid grid-cols-1  gap-2">
+              <Label htmlFor="amount" className="">
+                Amount
+              </Label>
+              <Input
+                onChange={handleOnChangeFile}
+                type="file"
+                id="file"
+                placeholder="Enter the Amount"
+              />
+
+              {/* {errors?.amount && (
+                <small className="text-red-400">
+                  {errors?.amount?.message}
+                </small>
+              )} */}
             </div>
 
             <DialogFooter className="gap-2 justify-start">

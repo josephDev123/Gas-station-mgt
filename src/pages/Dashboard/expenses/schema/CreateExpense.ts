@@ -8,7 +8,7 @@ export const expenseSchema = z.object({
 
   category: z.string().min(1, "Category is required"),
 
-  amount: z
+  amount: z.coerce
     .number({
       required_error: "Amount is required",
       invalid_type_error: "Amount must be a number",
