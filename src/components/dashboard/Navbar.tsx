@@ -1,12 +1,12 @@
 import { Bell } from "lucide-react";
 import { Dot } from "lucide-react";
-import CustomAvatar from "../CustomAvatar";
 import { Menu } from "lucide-react";
 import { IoHome } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { images } from "@/utils/images";
 import DropDownProfileAndLogoutHOC from "./DropDownProfileAndLogoutHOC";
+import CustomAvatar from "../CustomAvatar";
 
 interface INavbar {
   mobileLeftPanelToggle: VoidFunction;
@@ -45,11 +45,6 @@ export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
           <span className="truncate text-ellipsis sm:max-w-40 w-24">
             {session.name}
           </span>
-          {/* <CustomAvatar
-            alt="logo"
-            src={images.avatar}
-            className="border-2 object-cover sm:size-10 size-6 cursor-pointer"
-          /> */}
 
           {dropdownElement}
         </div>

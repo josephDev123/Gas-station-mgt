@@ -20,4 +20,10 @@ export const expenseSchema = z.object({
   //     .optional(),
 });
 
+//type for create schema
 export type IExpenseFormSchema = z.infer<typeof expenseSchema>;
+
+export const expenseUpdateSchema = expenseSchema.partial();
+
+//type for update schema
+export type IExpenseUpdateSchema = z.infer<typeof expenseUpdateSchema>;

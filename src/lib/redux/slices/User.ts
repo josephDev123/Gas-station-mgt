@@ -1,8 +1,12 @@
 import { IUser } from "@/types/IUser";
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
+import { fetchUser } from "../actions/fetchUser";
 
-const initialState: IUser = {
+const initialState: IUser & {
+  loading: boolean;
+  error?: string;
+} = {
   id: undefined,
   name: "",
   email: "",
@@ -16,18 +20,34 @@ const initialState: IUser = {
     address: "",
     phone_no: "",
   },
+  loading: false,
 };
 
 const User = createSlice({
   name: "User",
   initialState,
   reducers: {
-    setUser: (state: IUser, action: PayloadAction<IUser>) => {
+    setUser: (
+      state: IUser,
+      action: PayloadAction<IUser & { loading: boolean; error?: string }>,
+    ) => {
       return { ...state, ...action.payload };
     },
-    unsetUser: () => {
-      return initialState;
-    },
+    unsetUser: () => initialState,
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchUser.fulfilled, (state, action) => {
+        state.loading = false;
+        return { ...state, ...action.payload };
+      })
+      .addCase(fetchUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 

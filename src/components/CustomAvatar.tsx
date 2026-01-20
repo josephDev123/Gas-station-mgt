@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 import Loading from "./Loading";
 import { useState } from "react";
-import { MdErrorOutline } from "react-icons/md";
 import { FiAlertTriangle } from "react-icons/fi";
 import { images } from "@/utils/images";
 

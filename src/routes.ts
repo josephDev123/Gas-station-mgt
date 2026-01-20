@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
 
   {
     path: "/dashboard",
-    // loader: protectedUserDashboard,
+    loader: protectedUserDashboard,
     Component: DashboardLayout,
     children: [
       { index: true, Component: DashboardIndex },

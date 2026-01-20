@@ -4,14 +4,17 @@ import { lazy, Suspense, useState } from "react";
 
 import { queryClient } from "@/App";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
+import { Expense } from "../types/apiGetExpenseResult";
+import EditExpense from "./EditExpense";
 
 const DeleteModal = lazy(() => import("../../../../components/DeleteModal"));
 // const EditModal = lazy(() => import("./EditNozzle"));
 
-export default function DeleteEditViewBtn({ row }: { row: Row<any> }) {
+export default function DeleteEditViewBtn({ row }: { row: Row<Expense> }) {
   const [open, setOpen] = useState<boolean>(false);
   const [openEdit, setEditOpen] = useState<boolean>(false);
-  const [editRow, setEditRow] = useState<Row<any> | undefined>(undefined);
+  const [editRow, setEditRow] = useState<Row<Expense> | undefined>(undefined);
 
   const { mutate, isPending } = useMutateAction<
     { data: any; msg: string },
@@ -41,16 +44,13 @@ export default function DeleteEditViewBtn({ row }: { row: Row<any> }) {
   return (
     <>
       <div className="inline-flex gap-2 items-center">
-        <button
-          type="button"
-          onClick={() => {
-            setEditRow(row);
-            setEditOpen(true);
-          }}
+        <Link
+          to={row?.original?.receiptUrlMetadata?.secure_url}
+          target="_blank"
           className="px-4 py-1 border shadow-sm rounded-lg bg-blue-500 "
         >
           View
-        </button>
+        </Link>
         <button
           type="button"
           onClick={() => {
@@ -84,7 +84,7 @@ export default function DeleteEditViewBtn({ row }: { row: Row<any> }) {
       </Suspense>
 
       <Suspense>
-        {/* <EditModal row={editRow} open={openEdit} setOpen={setEditOpen} /> */}
+        <EditExpense row={editRow} open={openEdit} setOpen={setEditOpen} />
       </Suspense>
     </>
   );
