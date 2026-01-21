@@ -5,11 +5,11 @@ export interface IUser {
   role: "ATTENDANT" | "ADMIN";
   profile: {
     id: number | undefined;
-    avatar: String;
+    avatar: string;
     avatarMetadata: {
       public_id: string;
     };
-    address: String;
-    phone_no: String;
+    address: string;
+    phone_no: string;
   } | null;
 }

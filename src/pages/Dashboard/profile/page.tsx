@@ -1,63 +1,48 @@
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { IProfileSchema, profileSchema } from "./schema/profileSchema";
+import { useAppSelector } from "@/lib/redux/hooks";
+import CustomAvatar from "@/components/CustomAvatar";
+import { images } from "@/utils/images";
 
-// ----------------------
-// Zod Schema
-// ----------------------
-const profileSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  address: z.string().min(2, "Address is required"),
-  phone_no: z
-    .string()
-    .regex(/^0[0-9]{10}$/, "Phone number must be a valid Nigerian number"),
-  avatar: z
-    .any()
-    .optional()
-    .refine((file) => !file || file?.length === 1, "Please upload one image"),
-});
+// const user = {
+//   id: 1,
+//   email: "Bunmi55@gmail.com",
+//   name: "Bunmi Uzuegbu",
+//   role: "ATTENDANT",
+//   profile: {
+//     avatar:
+//       "https://res.cloudinary.com/drm0sixwc/image/upload/v1767812019/FuelSystem/profile.png",
+//     address: "Sabo",
+//     phone_no: "08130197306",
+//   },
+// };
 
-type ProfileFormValues = z.infer<typeof profileSchema>;
-
-// ----------------------
-// Mock User Data (API response)
-// ----------------------
-const user = {
-  id: 1,
-  email: "Bunmi55@gmail.com",
-  name: "Bunmi Uzuegbu",
-  role: "ATTENDANT",
-  profile: {
-    avatar:
-      "https://res.cloudinary.com/drm0sixwc/image/upload/v1767812019/FuelSystem/profile.png",
-    address: "Sabo",
-    phone_no: "08130197306",
-  },
-};
-
-// ----------------------
-// Profile Component
-// ----------------------
 export default function Profile() {
-  const [preview, setPreview] = useState<string | null>(user.profile.avatar);
+  const session = useAppSelector((state) => state.user);
+  const [preview, setPreview] = useState<string | null>(
+    session.profile.avatar || null,
+  );
+
+  console.log(preview);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<ProfileFormValues>({
+  } = useForm<IProfileSchema>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      name: user.name,
-      email: user.email,
-      address: user.profile.address,
-      phone_no: user.profile.phone_no,
+      name: session.name.trim(),
+      email: session.email.trim(),
+      address: session.profile.address.trim(),
+      phone_no: session.profile.phone_no.trim(),
+      role: session.role.trim(),
     },
   });
 
-  const onSubmit = async (data: ProfileFormValues) => {
+  const onSubmit = async (data: IProfileSchema) => {
     console.log("Profile Update Payload:", data);
     // Call API here
   };
@@ -68,10 +53,10 @@ export default function Profile() {
 
       {/* Avatar */}
       <div className="flex items-center gap-4 mb-6">
-        <img
-          src={preview || "/avatar-placeholder.png"}
-          alt="avatar"
-          className="w-20 h-20 rounded-full object-cover border"
+        <CustomAvatar
+          alt="logo"
+          src={(session?.profile?.avatar || images.avatar).toString()}
+          className="border-2 object-cover sm:size-10 size-6 cursor-pointer"
         />
         <label className="cursor-pointer text-sm text-blue-600">
           Change Avatar
@@ -95,11 +80,12 @@ export default function Profile() {
         <div>
           <label className="block text-sm font-medium">Full Name</label>
           <input
+            type="text"
             className="w-full mt-1 rounded-lg border px-3 py-2"
             {...register("name")}
           />
-          {errors.name && (
-            <p className="text-red-500 text-xs">{errors.name.message}</p>
+          {errors?.name && (
+            <p className="text-red-500 text-xs">{errors?.name?.message}</p>
           )}
         </div>
 
@@ -107,12 +93,13 @@ export default function Profile() {
         <div>
           <label className="block text-sm font-medium">Email</label>
           <input
+            type="email"
             disabled
             className="w-full mt-1 rounded-lg border px-3 py-2 bg-gray-100"
             {...register("email")}
           />
-          {errors.email && (
-            <p className="text-red-500 text-xs">{errors.email.message}</p>
+          {errors?.email && (
+            <p className="text-red-500 text-xs">{errors?.email?.message}</p>
           )}
         </div>
 
@@ -120,11 +107,12 @@ export default function Profile() {
         <div>
           <label className="block text-sm font-medium">Address</label>
           <input
+            type="text"
             className="w-full mt-1 rounded-lg border px-3 py-2"
             {...register("address")}
           />
-          {errors.address && (
-            <p className="text-red-500 text-xs">{errors.address.message}</p>
+          {errors?.address && (
+            <p className="text-red-500 text-xs">{errors?.address?.message}</p>
           )}
         </div>
 
@@ -132,11 +120,12 @@ export default function Profile() {
         <div>
           <label className="block text-sm font-medium">Phone Number</label>
           <input
+            type="tel"
             className="w-full mt-1 rounded-lg border px-3 py-2"
             {...register("phone_no")}
           />
-          {errors.phone_no && (
-            <p className="text-red-500 text-xs">{errors.phone_no.message}</p>
+          {errors?.phone_no && (
+            <p className="text-red-500 text-xs">{errors?.phone_no?.message}</p>
           )}
         </div>
 
@@ -144,8 +133,8 @@ export default function Profile() {
         <div>
           <label className="block text-sm font-medium">Role</label>
           <input
-            disabled
-            value={user.role}
+            readOnly={session.role !== "ADMIN"}
+            {...register("role")}
             className="w-full mt-1 rounded-lg border px-3 py-2 bg-gray-100"
           />
         </div>
