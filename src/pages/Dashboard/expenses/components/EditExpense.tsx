@@ -77,6 +77,10 @@ export default function EditExpense({
     formData.set("amount", data.amount.toString());
     formData.set("category", data.category);
     formData.set("description", data.description);
+    formData.set(
+      "uploadPublicId",
+      row.original.receiptUrlMetadata.public_id || "",
+    );
 
     if (file && fileSize <= 5) {
       formData.set("file", file);
@@ -96,6 +100,7 @@ export default function EditExpense({
           //   exact: true,
         });
         closeBtnRef.current?.click();
+        reset();
         return;
       },
     });

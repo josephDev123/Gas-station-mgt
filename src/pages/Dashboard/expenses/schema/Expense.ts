@@ -15,6 +15,8 @@ export const expenseSchema = z.object({
     })
     .positive("Amount must be greater than zero"),
 
+  uploadPublicId: z.string().min(1, "Upload Public ID is required").optional(),
+
   //   file: z
   //     .instanceof(Buffer)
   //     .optional(),
