@@ -52,7 +52,7 @@ export default function CreateNozzle({
   } = useForm<INozzleSchema>({
     resolver: zodResolver(NozzleSchema),
   });
-  const { mutate, isPending, isError, error, data } = useMutateAction<
+  const { mutate, isPending } = useMutateAction<
     INozzleSchema & { msg: string },
     INozzleSchema
   >("post", "nozzle/create");

@@ -14,10 +14,11 @@ export const profileSchema = z.object({
     .regex(/^0[0-9]{10}$/, "Phone number must be a valid Nigerian number")
     .or(z.literal(""))
     .optional(),
-  avatar: z
-    .any()
-    .optional()
-    .refine((file) => !file || file?.length === 1, "Please upload one image"),
+  // avatar: z
+  //   .any()
+  //   .optional()
+  //   .refine((file) => !file || file?.length === 1, "Please upload one image")
+  //   .optional(),
 });
 
 export type IProfileSchema = z.infer<typeof profileSchema>;
