@@ -102,6 +102,18 @@ export default function DashboardPage() {
       Revenue: Number(item.total_amount),
     })) ?? [];
 
+  const avgPricePerLiter =
+    summary.totalLitersSold > 0
+      ? summary.totalRevenue / summary.totalLitersSold
+      : 0;
+
+  const margin =
+    summary.totalRevenue > 0
+      ? ((summary.totalRevenue - summary.totalExpenses) /
+          summary.totalRevenue) *
+        100
+      : 0;
+
   return (
     <div className="container mx-auto space-y-8 py-6 px-0">
       <div className="flex lg:flex-row gap-3 flex-col lg:items-center justify-between">
@@ -182,13 +194,10 @@ export default function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <MetricCard
           title="Avg Price/Liter"
-          value={formatCurrency(summary.totalRevenue / summary.totalLitersSold)}
+          value={formatCurrency(avgPricePerLiter)}
           unit=""
         />
-        <MetricCard
-          title="Margin %"
-          value={`${Math.round(((summary.totalRevenue - summary.totalExpenses) / summary.totalRevenue) * 100)}%`}
-        />
+        <MetricCard title="Margin %" value={`${Math.round(margin)}%`} />
         <MetricCard
           title="Transactions"
           value={formatNumber(summary.totalSalesCount)}
