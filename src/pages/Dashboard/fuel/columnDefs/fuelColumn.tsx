@@ -1,62 +1,70 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { IFuel } from "../type/IFuel";
 import DeleteEditActionBtn from "../components.tsx/DeleteEditActionBtn";
+import { IUser } from "@/types/IUser";
 
-export const fuelColumnDef: ColumnDef<IFuel>[] = [
-  {
-    header: "S/N",
-    cell: ({ row }) => String(row.index + 1).padStart(2, "0"),
-  },
-  {
-    header: "Fuel name",
-    accessorKey: "name",
-    cell: ({ row }) => {
-      const name = row?.original?.name ?? "N/A";
-      return <div className="min-w-44">{name}</div>;
+export function fuelColumnDef(session: IUser) {
+  const fuelColumnDef: ColumnDef<IFuel>[] = [
+    {
+      header: "S/N",
+      cell: ({ row }) => String(row.index + 1).padStart(2, "0"),
     },
-  },
-  {
-    header: "Fuel Type",
-    accessorKey: "fuelType",
-  },
-
-  {
-    header: "Fuel Volume",
-    accessorKey: "fuelVolume",
-  },
-
-  {
-    header: "Fuel Volume Left",
-    accessorKey: "volumeLeft",
-    cell: ({ row }) => {
-      return row?.original?.volumeLeft ?? "N/A";
+    {
+      header: "Fuel name",
+      accessorKey: "name",
+      cell: ({ row }) => {
+        const name = row?.original?.name ?? "N/A";
+        return <div className="min-w-44">{name}</div>;
+      },
     },
-  },
-
-  {
-    header: "Unit",
-    accessorKey: "unit",
-  },
-
-  {
-    header: "Price per liter",
-    accessorKey: "price_per",
-  },
-
-  {
-    header: "Created At",
-    accessorKey: "createdAt",
-    cell: ({ row }) => {
-      const date = new Date(row?.original?.createdAt ?? null);
-      if (isNaN(date.getTime())) return ""; // handle invalid/null date
-
-      const dateTime = date.toLocaleString(); // shows date + time based on user locale
-      return <div className="min-w-44">{dateTime}</div>;
+    {
+      header: "Fuel Type",
+      accessorKey: "fuelType",
     },
-  },
 
-  {
-    header: "Action",
-    cell: ({ row }) => <DeleteEditActionBtn row={row} />,
-  },
-];
+    {
+      header: "Fuel Volume",
+      accessorKey: "fuelVolume",
+    },
+
+    {
+      header: "Fuel Volume Left",
+      accessorKey: "volumeLeft",
+      cell: ({ row }) => {
+        return row?.original?.volumeLeft ?? "N/A";
+      },
+    },
+
+    {
+      header: "Unit",
+      accessorKey: "unit",
+    },
+
+    {
+      header: "Price per liter",
+      accessorKey: "price_per",
+    },
+
+    {
+      header: "Created At",
+      accessorKey: "createdAt",
+      cell: ({ row }) => {
+        const date = new Date(row?.original?.createdAt ?? null);
+        if (isNaN(date.getTime())) return ""; // handle invalid/null date
+
+        const dateTime = date.toLocaleString(); // shows date + time based on user locale
+        return <div className="min-w-44">{dateTime}</div>;
+      },
+    },
+    ...(session.role === "ADMIN"
+      ? [
+          {
+            header: "Action",
+            cell: ({ row }) => <DeleteEditActionBtn row={row} />,
+          } as ColumnDef<IFuel>,
+        ]
+      : []),
+  ];
+
+  return fuelColumnDef;
+}

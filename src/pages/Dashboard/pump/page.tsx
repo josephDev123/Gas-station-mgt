@@ -12,6 +12,7 @@ import { IPump } from "./type/IPump";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "@/components/commons/Pagination";
 import { LoaderCircle } from "lucide-react";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 const ConfigurePumpModal = lazy(() => import("./components/ConfigurePump"));
 
@@ -21,6 +22,7 @@ export default function page() {
   const [isCreatePumpModalOpen, setIsCreatePumpModalOpen] = useState(false);
   const [globalFilter, setGlobal] = useState<any[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  const session = useAppSelector((state) => state.user);
 
   const page = Number(searchParams.get("page") ?? "1");
   const limit = Number(searchParams.get("limit") ?? "10");
@@ -40,7 +42,7 @@ export default function page() {
   const incrementDisabled = page >= totalPages;
 
   const table = useReactTable({
-    columns: pumpColumnDef,
+    columns: pumpColumnDef(session),
     data: data?.PumpQueryPaginate ?? fallbackData,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -66,13 +68,16 @@ export default function page() {
           placeholder="Search"
           onChange={(e) => table.setGlobalFilter(String(e.target.value))}
         />
-        <Button
-          onClick={() => setIsCreatePumpModalOpen(true)}
-          variant="default"
-          className="px-4 py-2 rounded-md  shadow-inner bg-green-500 hover:bg-green-600 text-white"
-        >
-          Add
-        </Button>
+
+        {session.role === "ADMIN" && (
+          <Button
+            onClick={() => setIsCreatePumpModalOpen(true)}
+            variant="default"
+            className="px-4 py-2 rounded-md  shadow-inner bg-green-500 hover:bg-green-600 text-white"
+          >
+            Add
+          </Button>
+        )}
       </section>
 
       <section className="overflow-x-auto max-w-full mt-5 bg-white rounded-lg p-4">
@@ -104,7 +109,7 @@ export default function page() {
                             ? null
                             : flexRender(
                                 header.column.columnDef.header,
-                                header.getContext()
+                                header.getContext(),
                               )}
                         </th>
                       ))}
@@ -125,7 +130,7 @@ export default function page() {
                         >
                           {flexRender(
                             cell.column.columnDef.cell,
-                            cell.getContext()
+                            cell.getContext(),
                           )}
                         </td>
                       ))}

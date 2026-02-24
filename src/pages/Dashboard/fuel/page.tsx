@@ -12,6 +12,7 @@ import { lazy, Suspense, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "@/components/commons/Pagination";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 const CreateFuelModal = lazy(() => import("./components.tsx/CreateFuelModal"));
 
@@ -21,6 +22,7 @@ export default function page() {
   const [isCreateFuelModalOpen, setIsCreateFuelModalOpen] = useState(false);
   const [globalFilter, setGlobal] = useState<any[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  const session = useAppSelector((state) => state.user);
 
   const page = Number(searchParams.get("page") ?? "1");
   const limit = Number(searchParams.get("limit") ?? "10");
@@ -38,7 +40,7 @@ export default function page() {
   const incrementDisabled = page >= totalPages;
 
   const table = useReactTable({
-    columns: fuelColumnDef,
+    columns: fuelColumnDef(session),
     data: data?.fuels ?? fallbackData,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -64,13 +66,15 @@ export default function page() {
           placeholder="Search"
           onChange={(e) => table.setGlobalFilter(String(e.target.value))}
         />
-        <Button
-          onClick={() => setIsCreateFuelModalOpen(true)}
-          variant="default"
-          className="px-4 py-2 rounded-md  shadow-inner bg-green-500 hover:bg-green-600 text-white"
-        >
-          Add
-        </Button>
+        {session?.role === "ADMIN" && (
+          <Button
+            onClick={() => setIsCreateFuelModalOpen(true)}
+            variant="default"
+            className="px-4 py-2 rounded-md  shadow-inner bg-green-500 hover:bg-green-600 text-white"
+          >
+            Add
+          </Button>
+        )}
       </section>
 
       <section className="overflow-x-auto max-w-full mt-5 bg-white rounded-lg">
@@ -102,7 +106,7 @@ export default function page() {
                             ? null
                             : flexRender(
                                 header.column.columnDef.header,
-                                header.getContext()
+                                header.getContext(),
                               )}
                         </th>
                       ))}
@@ -123,7 +127,7 @@ export default function page() {
                         >
                           {flexRender(
                             cell.column.columnDef.cell,
-                            cell.getContext()
+                            cell.getContext(),
                           )}
                         </td>
                       ))}
