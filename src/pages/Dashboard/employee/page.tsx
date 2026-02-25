@@ -8,15 +8,18 @@ import {
 import { useSearchParams } from "react-router-dom";
 import { IUser, IUsersData } from "./types/User";
 import { useState } from "react";
-import { usersColumnDef } from "./columnDef/UsersColumnDef";
+import { UsersColumnDef } from "./columnDef/UsersColumnDef";
 import { LoaderCircle } from "lucide-react";
 import Pagination from "@/components/commons/Pagination";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 const fallbackData = [];
 
 export default function Staff() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [globalFilter, setGlobal] = useState<any[]>([]);
+
+  const session = useAppSelector((state) => state.user);
 
   const page = Number(searchParams.get("page") ?? "1");
   const limit = Number(searchParams.get("limit") ?? "10");
@@ -35,7 +38,7 @@ export default function Staff() {
   const incrementDisabled = page >= totalPages;
 
   const table = useReactTable({
-    columns: usersColumnDef,
+    columns: UsersColumnDef(session),
     data: data?.Users ?? fallbackData,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -43,7 +46,7 @@ export default function Staff() {
     onGlobalFilterChange: setGlobal,
   });
   return (
-    <main className="flex flex-col">
+    <main className="flex flex-col ">
       <section className="flex flex-col">
         <h1 className="text-xl font-bold">Staff Management</h1>
         <p className="text-gray-700 text-sm">
@@ -92,7 +95,7 @@ export default function Staff() {
                             ? null
                             : flexRender(
                                 header.column.columnDef.header,
-                                header.getContext()
+                                header.getContext(),
                               )}
                         </th>
                       ))}
@@ -113,7 +116,7 @@ export default function Staff() {
                         >
                           {flexRender(
                             cell.column.columnDef.cell,
-                            cell.getContext()
+                            cell.getContext(),
                           )}
                         </td>
                       ))}

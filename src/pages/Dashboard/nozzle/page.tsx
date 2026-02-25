@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import CreateNozzle from "./components/CreateNozzle";
 import { Nozzle } from "./types/INozzle";
 import { NozzleColumnDef } from "./columnDef/NozzleColumnDef";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 const fallbackData = [];
 
@@ -21,6 +22,8 @@ export default function NozzlePage() {
   const [globalFilter, setGlobal] = useState<any[]>([]);
   const [searchGlobalFilter, setSearchGlobal] = useState<any[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const session = useAppSelector((state) => state.user);
 
   const page = Number(searchParams.get("page") ?? "1");
   const limit = Number(searchParams.get("limit") ?? "10");
@@ -40,7 +43,7 @@ export default function NozzlePage() {
   const incrementDisabled = page >= totalPages;
 
   const table = useReactTable({
-    columns: NozzleColumnDef,
+    columns: NozzleColumnDef(session),
     data: data?.nozzles ?? fallbackData,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -66,14 +69,15 @@ export default function NozzlePage() {
             //   onChange={(e) => table.setGlobalFilter(String(e.target.value))}
             className="p-2 rounded-md border max-w-80 my-4"
           />
-
-          <Button
-            onClick={() => SetIsCreateNozzleOpen(true)}
-            variant="default"
-            className="px-4 py-2 rounded-md  shadow-inner bg-green-500 hover:bg-green-600 text-white"
-          >
-            Create Nozzle
-          </Button>
+          {session.role === "ADMIN" && (
+            <Button
+              onClick={() => SetIsCreateNozzleOpen(true)}
+              variant="default"
+              className="px-4 py-2 rounded-md  shadow-inner bg-green-500 hover:bg-green-600 text-white"
+            >
+              Create Nozzle
+            </Button>
+          )}
         </div>
 
         <section className="overflow-x-auto max-w-full  bg-white rounded-lg p-4">
@@ -105,7 +109,7 @@ export default function NozzlePage() {
                               ? null
                               : flexRender(
                                   header.column.columnDef.header,
-                                  header.getContext()
+                                  header.getContext(),
                                 )}
                           </th>
                         ))}
@@ -126,7 +130,7 @@ export default function NozzlePage() {
                           >
                             {flexRender(
                               cell.column.columnDef.cell,
-                              cell.getContext()
+                              cell.getContext(),
                             )}
                           </td>
                         ))}

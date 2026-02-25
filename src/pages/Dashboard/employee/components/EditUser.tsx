@@ -19,13 +19,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import Loading from "@/components/Loading";
 import toast from "react-hot-toast";
-import { queryClient } from "@/App";
 import { Row } from "@tanstack/react-table";
 import { IUser } from "../types/User";
 import { IUserSchema, UserSchema } from "../scheme/UserSchema";
 import CustomAvatar from "@/components/CustomAvatar";
 import { FiEdit } from "react-icons/fi";
 import { images } from "@/utils/images";
+import { useQueryClient } from "@tanstack/react-query";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 interface EditUserProps {
   open: boolean;
@@ -33,6 +34,8 @@ interface EditUserProps {
   row: Row<IUser>;
 }
 export default function EditUser({ row, open, setOpen }: EditUserProps) {
+  const queryClient = useQueryClient();
+  const session = useAppSelector((state) => state.user);
   const {
     handleSubmit,
     register,
@@ -48,7 +51,7 @@ export default function EditUser({ row, open, setOpen }: EditUserProps) {
   const { mutate, isPending } = useMutateAction<
     IUserSchema & { msg: string },
     IUserSchema
-  >("patch", `auth/create-update/${row?.original?.id}`);
+  >("patch", `auth/upsert-profile/${row?.original?.id}`);
 
   // const file = watch("profile.avatar")?.[0];
 
@@ -56,8 +59,8 @@ export default function EditUser({ row, open, setOpen }: EditUserProps) {
     file && file instanceof File
       ? URL.createObjectURL(file)
       : typeof file === "string"
-      ? row?.original?.profile?.avatar
-      : images.avatar;
+        ? row?.original?.profile?.avatar
+        : images.avatar;
 
   const previewImage = existingAvatar;
 
@@ -77,6 +80,8 @@ export default function EditUser({ row, open, setOpen }: EditUserProps) {
     formData.set("role", data.role);
     formData.set("address", data.profile.address);
     formData.set("phone_no", data.profile.phone_no);
+    if (session?.profile?.avatarMetadata?.public_id)
+      formData.set("avatarPublicId", session.profile.avatarMetadata.public_id);
     mutate(formData as any, {
       onError: (error) => {
         console.log("error", error);
@@ -89,7 +94,6 @@ export default function EditUser({ row, open, setOpen }: EditUserProps) {
         toast.success(data.msg);
         await queryClient.invalidateQueries({
           queryKey: ["staffs"],
-          exact: true,
         });
         setTimeout(() => closeBtnRef.current?.click(), 1000);
 

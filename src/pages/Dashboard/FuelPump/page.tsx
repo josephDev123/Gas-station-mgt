@@ -9,8 +9,9 @@ import { useQueryFacade } from "@/hooks/useFetch";
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
-import { FuelPumpColumnDef } from "./columnDef/FuelPumpColumnDef";
+import { fuelPumpColumnDef } from "./columnDef/FuelPumpColumnDef";
 import { PumpFuelItem, PumpFuelResponse } from "./type/IFuelPump";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 const fallbackData = [];
 
@@ -18,6 +19,8 @@ export default function FuelPumpPage() {
   const [globalFilter, setGlobal] = useState<any[]>([]);
   const [searchGlobalFilter, setSearchGlobal] = useState<any[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const session = useAppSelector((state) => state.user);
 
   const page = Number(searchParams.get("page") ?? "1");
   const limit = Number(searchParams.get("limit") ?? "10");
@@ -37,7 +40,7 @@ export default function FuelPumpPage() {
   const incrementDisabled = page >= totalPages;
 
   const table = useReactTable({
-    columns: FuelPumpColumnDef,
+    columns: fuelPumpColumnDef(session),
     data: data?.PumpFuelData ?? fallbackData,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -93,7 +96,7 @@ export default function FuelPumpPage() {
                               ? null
                               : flexRender(
                                   header.column.columnDef.header,
-                                  header.getContext()
+                                  header.getContext(),
                                 )}
                           </th>
                         ))}
@@ -114,7 +117,7 @@ export default function FuelPumpPage() {
                           >
                             {flexRender(
                               cell.column.columnDef.cell,
-                              cell.getContext()
+                              cell.getContext(),
                             )}
                           </td>
                         ))}

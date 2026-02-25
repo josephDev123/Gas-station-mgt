@@ -41,7 +41,7 @@ import { UsersResponseData } from "@/types/IUsers";
 import { PumpFuelItem, PumpFuelResponse } from "../../FuelPump/type/IFuelPump";
 import { LoaderCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ICreateSalesPayloadSchema } from "./CreateSales";
+import { ICreateSalesPayloadSchema } from "./CreateSalesModal";
 
 type ISaleUpdate = {
   pump_fuel_id: number;
@@ -244,7 +244,7 @@ export default function EditSale({
                 onValueChange={(value) => {
                   setFuelPumpId(Number(value));
                   const selectedPump = pumpPumData?.PumpFuelData.find(
-                    (pump) => pump.id === Number(value)
+                    (pump) => pump.id === Number(value),
                   );
                   //   setPricePerLiter(
                   //     selectedPump ? selectedPump.fuel.price_per : null

@@ -16,6 +16,7 @@ import {
   ExpenseData,
   GetExpensesResponse,
 } from "./types/apiGetExpenseResult";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 const fallbackData = [];
 
@@ -24,6 +25,8 @@ export default function page() {
   const [globalFilter, setGlobal] = useState<any[]>([]);
   const [searchGlobalFilter, setSearchGlobal] = useState<any[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const session = useAppSelector((state) => state.user);
 
   const page = Number(searchParams.get("page") ?? "1");
   const limit = Number(searchParams.get("limit") ?? "10");
@@ -43,7 +46,7 @@ export default function page() {
   const incrementDisabled = page >= totalPages;
 
   const table = useReactTable({
-    columns: expenseColumns,
+    columns: expenseColumns(session),
     data: data?.expenses ?? fallbackData,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -62,7 +65,7 @@ export default function page() {
         </p>
       </section>
       <section className="flex flex-col">
-        <CreateExpenseSection />
+        {session?.role === "ADMIN" && <CreateExpenseSection />}
       </section>
 
       <section className="overflow-x-auto max-w-full  bg-white rounded-lg p-4">

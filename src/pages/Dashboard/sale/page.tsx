@@ -1,5 +1,5 @@
 import { useQueryFacade } from "@/hooks/useFetch";
-import CreateSales from "./components/CreateSales";
+// import CreateSales from "./components/CreateSalesModal";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
@@ -12,13 +12,19 @@ import { ISale } from "./types/ISale";
 import Pagination from "@/components/commons/Pagination";
 import { LoaderCircle } from "lucide-react";
 import { salesColumndef } from "./columndef/SalesColumndef";
+import CreateSalesModal from "./components/CreateSalesModal";
+import { Button } from "@/components/ui/button";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 const fallbackData = [];
 
 export default function SalePage() {
-  const [isCreateNozzleOpen, SetIsCreateNozzleOpen] = useState(false);
+  const [isCreateSaleOpen, setIsCreateSaleOpen] = useState(false);
+
   const [globalFilter, setGlobal] = useState<any[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const session = useAppSelector((state) => state.user);
 
   const page = Number(searchParams.get("page") ?? "1");
   const limit = Number(searchParams.get("limit") ?? "10");
@@ -36,7 +42,7 @@ export default function SalePage() {
   const incrementDisabled = page >= totalPages;
 
   const table = useReactTable({
-    columns: salesColumndef,
+    columns: salesColumndef(session),
     data: data?.SalesQuery ?? fallbackData,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -53,7 +59,23 @@ export default function SalePage() {
           the attendant responsible for each sale.
         </p>
       </section>
-      <CreateSales />
+      {/* <CreateSales /> */}
+      <div className="flex justify-end mt-4">
+        {session?.role === "ADMIN" && (
+          <Button
+            onClick={() => setIsCreateSaleOpen(true)}
+            variant="default"
+            className="px-4 py-2 rounded-md  shadow-inner bg-green-500 hover:bg-green-600 text-white"
+          >
+            Create Sale
+          </Button>
+        )}
+      </div>
+
+      <CreateSalesModal
+        open={isCreateSaleOpen}
+        onClose={() => setIsCreateSaleOpen(false)}
+      />
 
       <section className="overflow-x-auto max-w-full  bg-white rounded-lg sm:p-4 p-2 mt-6">
         {isLoading ? (
@@ -84,7 +106,7 @@ export default function SalePage() {
                             ? null
                             : flexRender(
                                 header.column.columnDef.header,
-                                header.getContext()
+                                header.getContext(),
                               )}
                         </th>
                       ))}
@@ -105,7 +127,7 @@ export default function SalePage() {
                         >
                           {flexRender(
                             cell.column.columnDef.cell,
-                            cell.getContext()
+                            cell.getContext(),
                           )}
                         </td>
                       ))}

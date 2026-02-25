@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import AssignNozzleToUser from "./components/AssignNozzleToUser";
 import { NozzleToUser } from "./types/INozzleToUser";
 import { NozzleToUserDef } from "./columndef/NozzleToUserDef";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 const fallbackData = [];
 
@@ -21,6 +22,8 @@ export default function NozzleToUserPage() {
   const [globalFilter, setGlobal] = useState<any[]>([]);
   const [searchGlobalFilter, setSearchGlobal] = useState<any[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const session = useAppSelector((state) => state.user);
 
   const page = Number(searchParams.get("page") ?? "1");
   const limit = Number(searchParams.get("limit") ?? "10");
@@ -42,7 +45,7 @@ export default function NozzleToUserPage() {
   const incrementDisabled = page >= totalPages;
 
   const table = useReactTable({
-    columns: NozzleToUserDef,
+    columns: NozzleToUserDef(session),
     data: data?.NozzleToUser ?? fallbackData,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -59,7 +62,7 @@ export default function NozzleToUserPage() {
         </p>
       </section>
       <section className="flex flex-col  space-y-5">
-        <AssignNozzleToUser />
+        {session?.role === "ADMIN" && <AssignNozzleToUser />}
 
         <section className="overflow-x-auto max-w-full  bg-white rounded-lg sm:p-4 p-2 ">
           {isLoading ? (
@@ -90,7 +93,7 @@ export default function NozzleToUserPage() {
                               ? null
                               : flexRender(
                                   header.column.columnDef.header,
-                                  header.getContext()
+                                  header.getContext(),
                                 )}
                           </th>
                         ))}
@@ -111,7 +114,7 @@ export default function NozzleToUserPage() {
                           >
                             {flexRender(
                               cell.column.columnDef.cell,
-                              cell.getContext()
+                              cell.getContext(),
                             )}
                           </td>
                         ))}

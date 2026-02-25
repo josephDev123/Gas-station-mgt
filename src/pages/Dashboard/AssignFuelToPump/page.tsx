@@ -11,6 +11,7 @@ import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
 import { pumpFColumnDef } from "./columnDefs/PumpfColumnDef";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 const fallbackData = [];
 
@@ -18,6 +19,8 @@ export default function FuelToPumpPage() {
   const [globalFilter, setGlobal] = useState<any[]>([]);
   const [searchGlobalFilter, setSearchGlobal] = useState<any[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const session = useAppSelector((state) => state.user);
 
   const page = Number(searchParams.get("page") ?? "1");
   const limit = Number(searchParams.get("limit") ?? "10");
@@ -37,7 +40,7 @@ export default function FuelToPumpPage() {
   const incrementDisabled = page >= totalPages;
 
   const table = useReactTable({
-    columns: pumpFColumnDef,
+    columns: pumpFColumnDef(session),
     data: data?.PumpQueryPaginate ?? fallbackData,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -93,7 +96,7 @@ export default function FuelToPumpPage() {
                               ? null
                               : flexRender(
                                   header.column.columnDef.header,
-                                  header.getContext()
+                                  header.getContext(),
                                 )}
                           </th>
                         ))}
@@ -114,7 +117,7 @@ export default function FuelToPumpPage() {
                           >
                             {flexRender(
                               cell.column.columnDef.cell,
-                              cell.getContext()
+                              cell.getContext(),
                             )}
                           </td>
                         ))}
