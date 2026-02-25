@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import Index from "./pages/client/Index";
+import LandingPage from "./pages/client/Index";
 import NotFound from "./pages/client/NotFound";
 import DashboardLayout from "./components/dashboard/Layout";
 import DashboardIndex from "./pages/Dashboard/Index/page";
@@ -23,7 +23,7 @@ import ProtectedUserDashboard from "./components/dashboard/ProtectedUserDashboar
 export const router = createBrowserRouter([
   {
     path: "/",
-    Component: Index,
+    Component: LandingPage,
   },
 
   {

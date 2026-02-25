@@ -1,34 +1,66 @@
-import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import Features from "@/components/Features";
-import Benefits from "@/components/Benefits";
-import Footer from "@/components/Footer";
-import { useEffect } from "react";
+// import Header from "@/components/Header";
+// import Hero from "@/components/Hero";
+// import Features from "@/components/Features";
+// import Benefits from "@/components/Benefits";
+// import Footer from "@/components/Footer";
+// import { useEffect } from "react";
 
-// https://tally.so/r/obRMRb
+// const Index = () => {
 
-const Index = () => {
-  // useEffect(() => {
-  //   async function positionApi() {
-  //     const api = await fetch(
-  //       "http://api.positionstack.com/v1/reverse?access_key=f56aa2c31cd1c0ebbe06fefdf9f4bf92&query=6.6778,3.1654"
-  //     );
-  //     const res = await api.json();
-  //     console.log(res);
-  //   }
+//   return (
+//     <div className="min-h-screen">
+//       <Header />
+//       <Hero />
+//       <Features />
+//       <Benefits />
+//       <Footer />
+//     </div>
+//   );
+// };
 
-  //   positionApi();
-  // }, []);
+// export default Index;
 
-  return (
-    <div className="min-h-screen">
-      <Header />
-      <Hero />
-      <Features />
-      <Benefits />
-      <Footer />
-    </div>
-  );
+"use client";
+
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+
+import { Navbar } from "./components/Navbar";
+import { HeroSection } from "./components/HeroSection";
+import { FeaturesSection } from "./components/FeaturesSection";
+import { HowItWorks } from "./components/HowItWorks";
+import { AnalyticsSection } from "./components/AnalyticsSection";
+import { CTASection } from "./components/CTASection";
+import { Footer } from "./components/Footer";
+
+/* ------------------ Animation Variants ------------------ */
+
+export const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
-export default Index;
+export const stagger = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+/* ------------------ Page ------------------ */
+
+export default function LandingPage() {
+  return (
+    <main className="bg-black text-white overflow-hidden">
+      <Navbar />
+      <HeroSection />
+      <FeaturesSection />
+      <HowItWorks />
+      <AnalyticsSection />
+      <CTASection />
+      <Footer />
+    </main>
+  );
+}
