@@ -26,7 +26,7 @@ axiosInstance.interceptors.request.use(
     // Handle the error
     console.log(error);
     return Promise.reject(error);
-  }
+  },
 );
 
 axiosInstance.interceptors.response.use(
@@ -72,7 +72,7 @@ axiosInstance.interceptors.response.use(
       return Promise.reject(error);
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;
