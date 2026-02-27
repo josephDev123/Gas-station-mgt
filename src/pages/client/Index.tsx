@@ -1,30 +1,3 @@
-// import Header from "@/components/Header";
-// import Hero from "@/components/Hero";
-// import Features from "@/components/Features";
-// import Benefits from "@/components/Benefits";
-// import Footer from "@/components/Footer";
-// import { useEffect } from "react";
-
-// const Index = () => {
-
-//   return (
-//     <div className="min-h-screen">
-//       <Header />
-//       <Hero />
-//       <Features />
-//       <Benefits />
-//       <Footer />
-//     </div>
-//   );
-// };
-
-// export default Index;
-
-"use client";
-
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-
 import { Navbar } from "./components/Navbar";
 import { HeroSection } from "./components/HeroSection";
 import { FeaturesSection } from "./components/FeaturesSection";
@@ -33,7 +6,7 @@ import { AnalyticsSection } from "./components/AnalyticsSection";
 import { CTASection } from "./components/CTASection";
 import { Footer } from "./components/Footer";
 
-/* ------------------ Animation Variants ------------------ */
+// Animation Variants
 
 export const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -48,8 +21,6 @@ export const stagger = {
     },
   },
 };
-
-/* ------------------ Page ------------------ */
 
 export default function LandingPage() {
   return (

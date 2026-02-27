@@ -17,13 +17,13 @@ export function Navbar() {
           <a href="#analytics" className="hover:text-white">
             Analytics
           </a>
-          <a href="#pricing" className="hover:text-white">
+          {/* <a href="#pricing" className="hover:text-white">
             Pricing
-          </a>
+          </a> */}
         </div>
 
         <Button className="bg-green-500 hover:bg-green-600 text-black">
-          Get Started
+          <a href="#requestDemo">Get Started</a>
         </Button>
       </div>
     </nav>

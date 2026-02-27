@@ -6,6 +6,7 @@ import { RequestDemoModal } from "./RequestDemoModal";
 
 export function HeroSection() {
   const [open, setOpen] = useState(false);
+
   return (
     <>
       <section className="min-h-screen flex items-center justify-center text-center px-6 pt-24 bg-gradient-to-b from-black via-gray-900 to-black">
