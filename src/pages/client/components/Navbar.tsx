@@ -29,7 +29,7 @@ export function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center space-x-4">
-          {session.id ? (
+          {/* {session.id ? (
             <Button
               onClick={() => navigate("dashboard")}
               variant="ghost"
@@ -45,7 +45,7 @@ export function Navbar() {
             >
               Login
             </Button>
-          )}
+          )} */}
           <Button className="bg-green-500 hover:bg-green-600 text-black">
             <a href="#requestDemo">Get Started</a>
           </Button>
