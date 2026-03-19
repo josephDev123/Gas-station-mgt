@@ -1,21 +1,16 @@
 import Navbar from "@/components/dashboard/Navbar";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { ChartNoAxesColumnDecreasing } from "lucide-react";
 import LeftPanel from "@/components/dashboard/LeftPanel";
 import { useEffect, useState } from "react";
 import MobileLeftpanel from "@/components/dashboard/MobileLeftpanel";
 import OverlayContainer from "@/components/OverlayContainer";
 import { images } from "@/utils/images";
-import { useAppSelector } from "@/lib/redux/hooks";
 
 export default function DashboardLayout() {
   const [isShow, setShow] = useState(true);
   const [isMobileLeftPanel, setMobileLeftPanel] = useState(false);
   const [shouldRender, setShouldRender] = useState(isShow);
-
-  const session = useAppSelector((state) => state.user);
-  console.log(session);
-  const navigate = useNavigate();
 
   const handleToggleMobileLeftPanel = () => {
     setMobileLeftPanel((prev) => !prev);
@@ -30,11 +25,11 @@ export default function DashboardLayout() {
     }
   }, [isShow]);
 
-  useEffect(() => {
-    if (!session) {
-      navigate("auth?auth_type=login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!session) {
+  //     navigate("auth?auth_type=login");
+  //   }
+  // }, []);
 
   return (
     <main className="flex flex-col h-screen w-full bg-bg ">

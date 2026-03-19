@@ -8,7 +8,7 @@ export async function protectedUserDashboard() {
 
   const state = store.getState();
   const user = state?.user;
-  console.log(user);
+  console.log("boolean", !!user);
 
   const isAuth = isAuthenticated(user);
   console.log(isAuth);

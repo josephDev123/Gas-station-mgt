@@ -10,7 +10,7 @@ const initialState: IUser & {
   id: undefined,
   name: "",
   email: "",
-  role: "ATTENDANT",
+  role: "",
   profile: {
     id: undefined,
     avatar: "",

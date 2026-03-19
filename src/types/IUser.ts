@@ -2,7 +2,7 @@ export interface IUser {
   id: number | undefined;
   email: string;
   name: string;
-  role: "ATTENDANT" | "ADMIN";
+  role: "ATTENDANT" | "ADMIN" | "";
   profile: {
     id: number | undefined;
     avatar: string;
