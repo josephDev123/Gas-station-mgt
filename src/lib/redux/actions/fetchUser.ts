@@ -18,7 +18,7 @@ export const fetchUser = createAsyncThunk<
       },
     );
 
-    // console.log(res.data);
+    console.log(res.data);
     return res.data.data;
   } catch (err: any) {
     return rejectWithValue(err.message);

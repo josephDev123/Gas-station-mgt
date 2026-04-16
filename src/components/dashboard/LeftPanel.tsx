@@ -32,9 +32,10 @@ export default function LeftPanel({ isShow }: ILeftPanel) {
       </div>
       <hr className="my-3" />
       <div className="flex flex-col  w-full justify-center items-center ">
-        {leftPanel_items.map((linkItem) => {
+        {leftPanel_items.map((linkItem, index) => {
           return (
             <LeftPanelBtn
+              key={index}
               icon={linkItem.icon}
               label={linkItem.label}
               className={`${isShow ? "w-36 " : ""}justify-start `}
