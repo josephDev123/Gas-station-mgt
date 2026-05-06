@@ -3,10 +3,11 @@ import { Dot } from "lucide-react";
 import { Menu } from "lucide-react";
 import { IoHome } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "@/lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { images } from "@/utils/images";
 import DropDownProfileAndLogoutHOC from "./DropDownProfileAndLogoutHOC";
 import CustomAvatar from "../CustomAvatar";
+import { unsetUser } from "@/lib/redux/slices/User";
 
 interface INavbar {
   mobileLeftPanelToggle: VoidFunction;
@@ -16,15 +17,13 @@ export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
   const session = useAppSelector((state) => state.user);
   console.log(session);
 
-  const dropdownElement = DropDownProfileAndLogoutHOC({
-    Component: () => (
-      <CustomAvatar
-        alt="logo"
-        src={(session?.profile?.avatar || images.avatar).toString()}
-        className="border-2 object-cover sm:size-10 size-6 cursor-pointer"
-      />
-    ),
-  });
+  const dispatch = useAppDispatch();
+
+  const logout = () => {
+    dispatch(unsetUser());
+    navigate("/");
+  };
+
   return (
     <section className="h-[80px] flex items-center justify-between gap-3 bg-white p-4 drop-shadow-md">
       <span className={`sm:hidden inline-flex items-center gap-2`}>
@@ -46,7 +45,15 @@ export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
             {session.name}
           </span>
 
-          {dropdownElement}
+          {/* {dropdownElement} */}
+
+          <DropDownProfileAndLogoutHOC logout={logout}>
+            <CustomAvatar
+              alt="logo"
+              src={(session?.profile?.avatar || images.avatar).toString()}
+              className="border-2 object-cover sm:size-10 size-6 cursor-pointer"
+            />
+          </DropDownProfileAndLogoutHOC>
         </div>
         <Menu
           onClick={mobileLeftPanelToggle}
