@@ -35,8 +35,6 @@ export default function NozzleToUserPage() {
     { NozzleToUser: NozzleToUser[]; totalCount: number; page: number }
   >(["nozzleToUser", { page }], `nozzle-to-user/?page=${page}&limit=${limit}`);
 
-  console.log(data);
-
   const totalPages = data?.NozzleToUser
     ? Math.ceil(data.totalCount / limit)
     : 0;

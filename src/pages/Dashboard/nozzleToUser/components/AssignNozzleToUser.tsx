@@ -19,11 +19,13 @@ import { useMutateAction } from "@/hooks/useMutation";
 import { INozzleUserAssign } from "../schema/NozzleToUserSchema";
 import { useState } from "react";
 import { toast } from "sonner";
-import { queryClient } from "@/App";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function AssignNozzleToUser() {
   const [userId, setUserId] = useState(null);
   const [nozzleId, setNozzleId] = useState(null);
+
+  const invalidate = useQueryClient();
   const { isLoading, isError, error, data } = useQueryFacade<
     Nozzle[],
     Error,
@@ -49,7 +51,7 @@ export default function AssignNozzleToUser() {
     isError: nozzleToUserError,
   } = useMutateAction<any[], INozzleUserAssign>(
     "post",
-    `nozzle-to-user/create`
+    `nozzle-to-user/create`,
   );
 
   const handleUserAssignment = async () => {
@@ -61,56 +63,23 @@ export default function AssignNozzleToUser() {
       { user_id: userId, nozzle_id: nozzleId },
       {
         onSuccess: async (data) => {
-          await queryClient.invalidateQueries({ queryKey: ["nozzleToUser"] });
+          await invalidate.invalidateQueries({
+            queryKey: ["nozzleToUser"],
+          });
           toast.success("Nozzle assigned to User successfully");
         },
         onError: (error) => {
           toast.error(
-            error?.message || "Failed to assign Nozzle to User. Try again."
+            error?.message || "Failed to assign Nozzle to User. Try again.",
           );
         },
-      }
+      },
     );
   };
   return (
     <section className="mt-3">
       <div className="flex flex-wrap gap-2 items-center justify-between">
         <div className="inline-flex gap-6 items-center">
-          <div className="w-full">
-            <Label htmlFor="User">Select User</Label>
-            <Select onValueChange={(value) => setUserId(Number(value))}>
-              <SelectTrigger className="sm:w-[250px] w-full">
-                <SelectValue placeholder="Users" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {userIsLoading ? (
-                    <LoaderCircle />
-                  ) : userIsError ? (
-                    <small className="text-red-400">
-                      {userError.message || "Something went wrong"}
-                    </small>
-                  ) : userData!?.Users?.length <= 0 ? (
-                    <SelectItem value="no data">No data</SelectItem>
-                  ) : (
-                    <>
-                      {userData!?.Users?.map((user) => (
-                        <SelectItem key={user.id} value={String(user.id)}>
-                          {user.name}
-                        </SelectItem>
-                      ))}
-                    </>
-                  )}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="flex flex-col items-center justify-center">
-            <p>Assign</p>
-            <FaArrowRight />
-          </div>
-
           <div className="w-full">
             <Label htmlFor="User">Nozzle</Label>
             <Select onValueChange={(value) => setNozzleId(Number(value))}>
@@ -138,6 +107,41 @@ export default function AssignNozzleToUser() {
                       {data?.nozzles?.map((nozzle, i) => (
                         <SelectItem value={String(nozzle.id)}>
                           {nozzle.name}
+                        </SelectItem>
+                      ))}
+                    </>
+                  )}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex flex-col items-center justify-center">
+            <p>Assign</p>
+            <FaArrowRight />
+          </div>
+
+          <div className="w-full">
+            <Label htmlFor="User">Select User</Label>
+            <Select onValueChange={(value) => setUserId(Number(value))}>
+              <SelectTrigger className="sm:w-[250px] w-full">
+                <SelectValue placeholder="Users" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {userIsLoading ? (
+                    <LoaderCircle />
+                  ) : userIsError ? (
+                    <small className="text-red-400">
+                      {userError.message || "Something went wrong"}
+                    </small>
+                  ) : userData!?.Users?.length <= 0 ? (
+                    <SelectItem value="no data">No data</SelectItem>
+                  ) : (
+                    <>
+                      {userData!?.Users?.map((user) => (
+                        <SelectItem key={user.id} value={String(user.id)}>
+                          {user.name}
                         </SelectItem>
                       ))}
                     </>

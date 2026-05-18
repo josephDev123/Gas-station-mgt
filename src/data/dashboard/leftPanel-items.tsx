@@ -52,7 +52,7 @@ export const leftPanel_items: IleftPanel_items[] = [
     icon: <MdAssignment className="size-4" />,
   },
   {
-    label: "nozzle user",
+    label: "Assign Nozzle",
     link: "/dashboard/nozzle-user",
     icon: <FaTasks className="size-4" />,
   },

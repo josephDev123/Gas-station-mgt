@@ -23,7 +23,7 @@ export default function LeftPanel({ isShow }: ILeftPanel) {
           src={(session?.profile?.avatar || images.avatar).toString()}
           className={`${
             isShow ? "size-16" : "size-8"
-          }  border rounded-md object-fill`}
+          }  border rounded-full object-fill`}
         />
         <div className={`${isShow ? "" : "hidden"} flex flex-col items-center`}>
           <strong>{session.name}</strong>

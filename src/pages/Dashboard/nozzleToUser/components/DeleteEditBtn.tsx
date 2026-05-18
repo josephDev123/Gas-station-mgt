@@ -1,8 +1,8 @@
 import { useMutateAction } from "@/hooks/useMutation";
+import { useQueryClient } from "@tanstack/react-query";
 import { Row } from "@tanstack/react-table";
+import { AxiosError } from "axios";
 import { lazy, Suspense, useState } from "react";
-
-import { queryClient } from "@/App";
 import { toast } from "sonner";
 
 const DeleteModal = lazy(() => import("../../../../components/DeleteModal"));
@@ -13,30 +13,39 @@ export default function DeleteEditBtn({ row }: { row: Row<any> }) {
   const [openEdit, setEditOpen] = useState<boolean>(false);
   const [editRow, setEditRow] = useState<Row<any> | undefined>(undefined);
 
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutateAction<
     { data: any; msg: string },
     null
   >("delete", `nozzle-to-user/delete/${row?.original?.id}`);
+
   const handleDelete = () => {
-    alert("coming soon ...");
-    // mutate(null, {
-    //   onError: (error) => {
-    //     const errMessage =
-    //       typeof error?.message === "object" && error?.message !== null
-    //         ? error?.message
-    //         : "An error occurred";
-    //     toast.error(errMessage);
-    //     return;
-    //   },
-    //   onSuccess: async (data) => {
-    //     await queryClient.invalidateQueries({
-    //       queryKey: ["nozzleToUser"],
-    //     });
-    //     toast.success(data.msg || "Deleted successfully");
-    //     setTimeout(() => setOpen(false), 1000);
-    //     return;
-    //   },
-    // });
+    mutate(null, {
+      onError: (error) => {
+        if (error instanceof AxiosError) {
+          toast.error(error.response.data?.message);
+          return;
+        }
+        if (error instanceof Error) {
+          toast.error(error.message);
+          return;
+        }
+
+        toast.error("Something went wrong while deleting the assignment");
+        return;
+      },
+      onSuccess: async (data) => {
+        await queryClient.invalidateQueries({
+          queryKey: ["nozzleToUser"],
+        });
+
+        setTimeout(() => setOpen(false), 2000);
+
+        toast.success(data.msg || "Deleted successfully");
+        return;
+      },
+    });
   };
 
   return (

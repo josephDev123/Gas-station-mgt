@@ -39,11 +39,11 @@ export default function LeftPanelBtn({
         className={cn(
           ` ${
             pathname === location ? "text-white" : "text-black/80"
-          }  px-4 py-2 hover:text-white  w-full text-center flex items-center justify-center gap-2`,
-          className
+          }  px-4 py-2 hover:text-white  w-full truncate  text-center flex items-center justify-center gap-2`,
+          className,
         )}
       >
-        {icon} {isShow && label}
+        <span>{icon}</span> {isShow && <span>{label}</span>}
       </button>
     </div>
   );

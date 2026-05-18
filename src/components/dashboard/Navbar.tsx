@@ -8,6 +8,7 @@ import { images } from "@/utils/images";
 import DropDownProfileAndLogoutHOC from "./DropDownProfileAndLogoutHOC";
 import CustomAvatar from "../CustomAvatar";
 import { unsetUser } from "@/lib/redux/slices/User";
+import { useNotification } from "@/hooks/useNotification";
 
 interface INavbar {
   mobileLeftPanelToggle: VoidFunction;
@@ -24,6 +25,9 @@ export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
     navigate("/");
   };
 
+  const { notification } = useNotification();
+
+  console.log(notification.data);
   return (
     <section className="h-[80px] flex items-center justify-between gap-3 bg-white p-4 drop-shadow-md">
       <span className={`sm:hidden inline-flex items-center gap-2`}>
