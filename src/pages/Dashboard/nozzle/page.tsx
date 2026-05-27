@@ -93,7 +93,7 @@ export default function NozzlePage() {
             <>
               {data?.nozzles?.length === 0 ? (
                 <div className="flex flex-col h-52 justify-center items-center">
-                  No Pump records found.
+                  No Nozzle records found.
                 </div>
               ) : (
                 <table className="min-w-full border-collapse  border-gray-300 rounded-lg shadow-sm">
