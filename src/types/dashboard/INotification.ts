@@ -1,3 +1,5 @@
+import { number } from "zod";
+
 export enum NotificationType {
   LOW_FUEL = "LOW_FUEL",
   FUEL_EMPTY = "FUEL_EMPTY",
@@ -40,6 +42,14 @@ export type FromUser = {
   updatedAt: string;
 };
 
+export type IReadNotification = {
+  id: number;
+  notificationId: number;
+  userId: number;
+  readAt: string;
+  updatedAt: string;
+};
+
 export type Notification = {
   id: number;
 
@@ -71,6 +81,7 @@ export type Notification = {
 
   from?: FromUser;
   user?: FromUser;
+  readNotification: IReadNotification[];
 };
 
 export type INotificationApiResponse = {

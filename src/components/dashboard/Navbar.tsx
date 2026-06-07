@@ -10,6 +10,7 @@ import DropDownProfileAndLogoutHOC from "./DropDownProfileAndLogoutHOC";
 import CustomAvatar from "../CustomAvatar";
 import { unsetUser } from "@/lib/redux/slices/User";
 import { useNotification } from "@/hooks/useNotification";
+import { Notification } from "@/types/dashboard/INotification";
 
 interface INavbar {
   mobileLeftPanelToggle: VoidFunction;
@@ -29,16 +30,26 @@ export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
 
   const { notification, NotificationMutation } = useNotification();
 
-  const notifications = useMemo(
+  const notifications = useMemo<Notification[]>(
     () => notification.data?.data.flatMap((item) => item ?? []) ?? [],
     [notification.data],
   );
 
   console.log("notifications", notification);
 
+  // const unreadCount = useMemo(
+  //   () => notifications.filter((item) => !item.isRead).length,
+  //   [notifications],
+  // );
   const unreadCount = useMemo(
-    () => notifications.filter((item) => !item.isRead).length,
-    [notifications],
+    () =>
+      notifications.filter(
+        (notification) =>
+          !notification.readNotification.some(
+            (read) => read.userId === session.id,
+          ),
+      ).length,
+    [notifications, session.id],
   );
 
   console.log("unreadCount", unreadCount);
