@@ -16,12 +16,12 @@ interface INavbar {
   mobileLeftPanelToggle: VoidFunction;
 }
 export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [hasMarkedReadOnOpen, setHasMarkedReadOnOpen] = useState(false);
   const navigate = useNavigate();
   const session = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const [hasMarkedReadOnOpen, setHasMarkedReadOnOpen] = useState(false);
 
   const logout = () => {
     dispatch(unsetUser());
