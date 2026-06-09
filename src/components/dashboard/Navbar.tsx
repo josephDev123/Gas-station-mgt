@@ -76,7 +76,12 @@ export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
   };
 
   useEffect(() => {
-    if (!isNotificationOpen || hasMarkedReadOnOpen || unreadCount === 0) {
+    if (
+      !isNotificationOpen ||
+      hasMarkedReadOnOpen ||
+      NotificationMutation.isPending ||
+      unreadCount === 0
+    ) {
       return;
     }
 

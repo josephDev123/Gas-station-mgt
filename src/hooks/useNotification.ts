@@ -17,7 +17,7 @@ export function useNotification() {
   });
 
   const NotificationMutation = useMutation({
-    mutationKey: ["notification"],
+    mutationKey: ["mark-notification-read"],
     mutationFn: (data: { notificationId: number; userId: number }[]) =>
       NotificationAction(data),
   });
