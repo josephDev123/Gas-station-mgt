@@ -19,9 +19,7 @@ const Auth = () => {
               <Fuel className="w-8 h-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">
-            FuelStation Pro
-          </h1>
+          <h1 className="text-3xl font-bold text-white mb-2">gas.josephdev</h1>
           <p className="text-slate-300">
             Complete Gas Station Management System
           </p>

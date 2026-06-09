@@ -37,22 +37,31 @@ export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
 
   console.log("notifications", notification);
 
-  // const unreadCount = useMemo(
-  //   () => notifications.filter((item) => !item.isRead).length,
-  //   [notifications],
-  // );
-  const unreadCount = useMemo(
-    () =>
-      notifications.filter(
+  const { unreadCount, unreadNotifications } = useMemo(() => {
+    const count = notifications.filter(
+      (notification) =>
+        !notification.readNotification.some(
+          (read) => read.userId === session.id,
+        ),
+    ).length;
+
+    const unreadNotifications = notifications
+      .filter(
         (notification) =>
           !notification.readNotification.some(
             (read) => read.userId === session.id,
           ),
-      ).length,
-    [notifications, session.id],
-  );
+      )
+      .map((unreadNotification) => ({
+        notificationId: unreadNotification.id,
+        userId: session.id,
+      }));
+
+    return { unreadCount: count, unreadNotifications };
+  }, [notifications, session.id]);
 
   console.log("unreadCount", unreadCount);
+  console.log("unreadNotifications", unreadNotifications);
 
   const displayUnreadCount = isNotificationOpen ? 0 : unreadCount;
 
@@ -71,9 +80,9 @@ export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
       return;
     }
 
-    setHasMarkedReadOnOpen(true);
-    NotificationMutation.mutate(undefined, {
+    NotificationMutation.mutate(unreadNotifications, {
       onSuccess: () => {
+        setHasMarkedReadOnOpen(true);
         queryClient.invalidateQueries({ queryKey: ["notification"] });
       },
       onError: () => {

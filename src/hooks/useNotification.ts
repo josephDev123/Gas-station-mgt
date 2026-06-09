@@ -18,7 +18,8 @@ export function useNotification() {
 
   const NotificationMutation = useMutation({
     mutationKey: ["notification"],
-    mutationFn: NotificationAction,
+    mutationFn: (data: { notificationId: number; userId: number }[]) =>
+      NotificationAction(data),
   });
 
   return { notification, NotificationMutation };

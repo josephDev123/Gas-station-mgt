@@ -7,7 +7,9 @@ export async function Notification() {
   return res.data;
 }
 
-export async function NotificationAction() {
-  const res = await axiosInstance.patch("/notification/mark-seen-all");
+export async function NotificationAction(
+  data: { notificationId: number; userId: number }[],
+) {
+  const res = await axiosInstance.post("/notification/mark-seen-all", data);
   return res.data;
 }
