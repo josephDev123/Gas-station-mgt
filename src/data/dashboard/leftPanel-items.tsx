@@ -34,11 +34,11 @@ export const leftPanel_items: IleftPanel_items[] = [
     link: "/dashboard/pump",
     icon: <FaGasPump className="size-4" />,
   },
-  {
-    label: "Assign Fuel",
-    link: "/dashboard/assign-fuel-to-pump",
-    icon: <MdOutlineAssignmentTurnedIn className="size-4" />,
-  },
+  // {
+  //   label: "Assign Fuel",
+  //   link: "/dashboard/assign-fuel-to-pump",
+  //   icon: <MdOutlineAssignmentTurnedIn className="size-4" />,
+  // },
 
   {
     label: "fuel-pump",

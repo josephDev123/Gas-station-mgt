@@ -1,18 +1,22 @@
 import { useMutateAction } from "@/hooks/useMutation";
 import { Row } from "@tanstack/react-table";
 import { lazy, Suspense, useState } from "react";
-
-import { queryClient } from "@/App";
 import { toast } from "sonner";
 import { IPump } from "../type/IPump";
+import { useQueryClient } from "@tanstack/react-query";
 
 const DeleteModal = lazy(() => import("../../../../components/DeleteModal"));
 const EditModal = lazy(() => import("./EditPump"));
+const AssignFuel = lazy(() => import("./AssignFuelToPump"));
 
 export default function DeleteEditActionBtn({ row }: { row: Row<IPump> }) {
   const [open, setOpen] = useState<boolean>(false);
+  const [isAssignFuelOpen, setIsAssignFuelOpen] = useState<boolean>(false);
   const [openEdit, setEditOpen] = useState<boolean>(false);
-  const [editRow, setEditRow] = useState<Row<IPump> | undefined>(undefined);
+  const [Row, setRow] = useState<Row<IPump> | undefined>(undefined);
+
+  const queryClient = useQueryClient();
+
   const { mutate, isPending, data } = useMutateAction<
     { data: IPump; msg: string },
     null
@@ -43,7 +47,17 @@ export default function DeleteEditActionBtn({ row }: { row: Row<IPump> }) {
         <button
           type="button"
           onClick={() => {
-            setEditRow(row);
+            setRow(row);
+            setIsAssignFuelOpen(true);
+          }}
+          className="px-4 py-1 border shadow-sm rounded-lg border-green-300 "
+        >
+          assign Fuel
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setRow(row);
             setEditOpen(true);
           }}
           className="px-4 py-1 border shadow-sm rounded-lg border-green-300 "
@@ -73,7 +87,15 @@ export default function DeleteEditActionBtn({ row }: { row: Row<IPump> }) {
       </Suspense>
 
       <Suspense>
-        <EditModal row={editRow} open={openEdit} setOpen={setEditOpen} />
+        <EditModal row={Row} open={openEdit} setOpen={setEditOpen} />
+      </Suspense>
+
+      <Suspense>
+        <AssignFuel
+          row={Row}
+          open={isAssignFuelOpen}
+          setOpen={setIsAssignFuelOpen}
+        />
       </Suspense>
     </>
   );
