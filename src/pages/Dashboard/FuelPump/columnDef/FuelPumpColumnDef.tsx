@@ -72,8 +72,7 @@ export function fuelPumpColumnDef(_: IUser): ColumnDef<PumpFuelItem>[] {
     },
 
     {
-      header: "Updated At",
-      accessorKey: "updatedAt",
+      header: "Actions",
       cell: ({ row }) => <ActionBtns row={row} />,
     },
   ];

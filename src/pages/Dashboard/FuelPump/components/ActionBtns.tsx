@@ -6,12 +6,14 @@ import { IPump } from "../../pump/type/IPump";
 import { PumpFuelItem } from "../type/IFuelPump";
 import { useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import EditFuelPump from "./EditFuelToPump";
 
 const DeleteModal = lazy(() => import("@/components/DeleteModal"));
 // const AssignFuelModal = lazy(() => import("./AssignFuelModal"));
 
 export default function ActionBtns({ row }: { row: Row<PumpFuelItem> }) {
   const [open, setOpen] = useState<boolean>(false);
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [Row, setRow] = useState<Row<PumpFuelItem> | undefined>(undefined);
 
   const queryClient = useQueryClient();
@@ -57,7 +59,7 @@ export default function ActionBtns({ row }: { row: Row<PumpFuelItem> }) {
           type="button"
           onClick={() => {
             setRow(row);
-            setOpen(true);
+            setIsEditOpen(true);
           }}
           className="px-4 py-1 border shadow-sm rounded-lg text-nowrap border-green-300 "
         >
@@ -81,15 +83,15 @@ export default function ActionBtns({ row }: { row: Row<PumpFuelItem> }) {
           action={handleDelete}
           deleteStatus={isPending}
           desc={"The assignment of the fuel to pump will be deleted"}
-          heading="Fuel assigned to Pump"
+          heading="Delete Fuel assigned to Pump"
           open={open}
           setOpen={setOpen}
         />
       </Suspense>
 
-      {/* <Suspense>
-        <AssignFuelModal row={editRow} open={open} setOpen={setOpen} />
-      </Suspense> */}
+      <Suspense>
+        <EditFuelPump row={Row} open={isEditOpen} setOpen={setIsEditOpen} />
+      </Suspense>
     </>
   );
 }
