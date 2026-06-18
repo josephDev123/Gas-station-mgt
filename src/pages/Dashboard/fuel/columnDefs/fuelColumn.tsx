@@ -23,15 +23,15 @@ export function fuelColumnDef(session: IUser) {
     },
 
     {
-      header: "Fuel Volume",
+      header: "Fuel stock",
       accessorKey: "fuelVolume",
     },
 
     {
-      header: "Fuel Volume Left",
+      header: "Fuel stock Left",
       accessorKey: "volumeLeft",
       cell: ({ row }) => {
-        return row?.original?.volumeLeft ?? "N/A";
+        return row?.original?.volumeLeft || row?.original.fuelVolume || "N/A";
       },
     },
 

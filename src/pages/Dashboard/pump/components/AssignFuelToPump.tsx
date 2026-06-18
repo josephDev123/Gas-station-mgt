@@ -28,6 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Link } from "react-router-dom";
+import { AxiosError } from "axios";
 
 type IFormType = {
   fuelId: number;
@@ -82,8 +83,17 @@ export default function AssignFuelToPump({
     mutate(payload, {
       onError: async (error) => {
         console.log(error);
-        toast.error(error.message);
-        return;
+        if (error instanceof AxiosError) {
+          toast.error(error.response.data.message);
+          return;
+        }
+
+        if (error instanceof Error) {
+          toast.error(error.message);
+          return;
+        }
+
+        toast.error("Something went wrong");
       },
       onSuccess: async (data) => {
         console.log(data.msg);

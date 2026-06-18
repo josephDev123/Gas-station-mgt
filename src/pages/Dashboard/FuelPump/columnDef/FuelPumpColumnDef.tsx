@@ -34,13 +34,16 @@ export function fuelPumpColumnDef(_: IUser): ColumnDef<PumpFuelItem>[] {
       cell: ({ row }) => row?.original?.fuel?.fuelType,
     },
     {
-      header: "Fuel volume ",
+      header: "Fuel Stock ",
       cell: ({ row }) => row?.original?.fuel?.fuelVolume,
     },
 
     {
-      header: "Fuel volume Left",
-      cell: ({ row }) => row?.original?.fuel?.volumeLeft || "N/A",
+      header: "Fuel Stock Left",
+      cell: ({ row }) =>
+        row?.original?.fuel?.volumeLeft ||
+        row?.original?.fuel?.fuelVolume ||
+        "N/A",
     },
 
     {
