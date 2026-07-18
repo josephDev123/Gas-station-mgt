@@ -2,6 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ISale } from "../types/ISale";
 import DeleteEditActionBtn from "../components/EditDeleteBtn";
 import { IUser } from "@/types/IUser";
+import { format } from "date-fns";
 
 export function salesColumndef(session: IUser): ColumnDef<ISale>[] {
   const salesColumndef: ColumnDef<ISale>[] = [
@@ -97,6 +98,15 @@ export function salesColumndef(session: IUser): ColumnDef<ISale>[] {
       cell: ({ row }) => (
         <div className="max-w-52 truncate capitalize">
           {row?.original?.PumpFuel?.pump?.name ?? "N/A"}{" "}
+        </div>
+      ),
+    },
+
+    {
+      header: "Created At",
+      cell: ({ row }) => (
+        <div className="max-w-52 truncate capitalize">
+          {format(row?.original?.createdAt, "dd-MM-yyyy h:mm")}
         </div>
       ),
     },
