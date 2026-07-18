@@ -41,8 +41,10 @@ const User = createSlice({
         state.loading = true;
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
+        // state.loading = false;
+        // return { ...state, ...action.payload };
         state.loading = false;
-        return { ...state, ...action.payload };
+        Object.assign(state, action.payload);
       })
       .addCase(fetchUser.rejected, (state, action) => {
         state.loading = false;

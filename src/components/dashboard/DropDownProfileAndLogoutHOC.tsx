@@ -1,34 +1,26 @@
-import { ComponentType, useState } from "react";
+import { useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import LogOutModal from "../commons/LogOutModal";
-import { useAppDispatch } from "@/lib/redux/hooks";
-import { unsetUser } from "@/lib/redux/slices/User";
-import { useNavigate } from "react-router-dom";
 
 interface IDropDownProfileAndLogoutHOC<T> {
-  Component: ComponentType<T & {}>;
   className?: T;
+  children?: React.ReactNode;
+  logout: VoidFunction;
 }
 
 export default function DropDownProfileAndLogoutHOC<T>({
-  Component,
   className,
+  children,
+  logout,
 }: IDropDownProfileAndLogoutHOC<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  const logout = () => {
-    dispatch(unsetUser());
-    navigate("/");
-  };
   return (
     <main className={`relative flex flex-col ${className}`}>
       <section className="inline-flex gap-3 items-center">
-        <Component {...className} />
+        {children}
         <RiArrowDropDownLine
           className="cursor-pointer"
           onClick={() => setIsOpen((prev) => !prev)}

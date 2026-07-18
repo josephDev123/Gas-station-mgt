@@ -18,6 +18,7 @@ export default function Profile() {
 
   const dispatch = useAppDispatch();
 
+  console.log("session", session);
   console.log("profile", preview, file);
 
   const {

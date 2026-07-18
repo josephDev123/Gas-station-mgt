@@ -5,7 +5,7 @@ import { BsFillPeopleFill } from "react-icons/bs";
 import { IoPersonSharp } from "react-icons/io5";
 import { GiFuelTank } from "react-icons/gi";
 import { FaTasks } from "react-icons/fa";
-import { BadgeDollarSign, Banknote } from "lucide-react";
+import { BadgeDollarSign, Banknote, Syringe } from "lucide-react";
 import { ChartNoAxesCombined } from "lucide-react";
 import { MdAssignment } from "react-icons/md";
 import { MdOutlineAssignmentTurnedIn } from "react-icons/md";
@@ -34,11 +34,11 @@ export const leftPanel_items: IleftPanel_items[] = [
     link: "/dashboard/pump",
     icon: <FaGasPump className="size-4" />,
   },
-  {
-    label: "Assign Fuel",
-    link: "/dashboard/assign-fuel-to-pump",
-    icon: <MdOutlineAssignmentTurnedIn className="size-4" />,
-  },
+  // {
+  //   label: "Assign Fuel",
+  //   link: "/dashboard/assign-fuel-to-pump",
+  //   icon: <MdOutlineAssignmentTurnedIn className="size-4" />,
+  // },
 
   {
     label: "fuel-pump",
@@ -49,10 +49,10 @@ export const leftPanel_items: IleftPanel_items[] = [
   {
     label: "Nozzle",
     link: "/dashboard/nozzle",
-    icon: <MdAssignment className="size-4" />,
+    icon: <Syringe className="size-4" />,
   },
   {
-    label: "nozzle user",
+    label: "Assign Nozzle",
     link: "/dashboard/nozzle-user",
     icon: <FaTasks className="size-4" />,
   },

@@ -1,6 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { PumpFuelItem } from "../type/IFuelPump";
 import { IUser } from "@/types/IUser";
+import ActionBtns from "../components/ActionBtns";
 
 export function fuelPumpColumnDef(_: IUser): ColumnDef<PumpFuelItem>[] {
   const baseColumns: ColumnDef<PumpFuelItem>[] = [
@@ -9,7 +10,7 @@ export function fuelPumpColumnDef(_: IUser): ColumnDef<PumpFuelItem>[] {
       cell: ({ row }) => String(row.index + 1).padStart(2, "0"),
     },
     {
-      header: "Fuel Assigned to Pump",
+      header: "Fuel Volume Assigned to Pump(L/G)",
       cell: ({ row }) => row?.original?.volume,
     },
 
@@ -33,13 +34,16 @@ export function fuelPumpColumnDef(_: IUser): ColumnDef<PumpFuelItem>[] {
       cell: ({ row }) => row?.original?.fuel?.fuelType,
     },
     {
-      header: "Fuel volume ",
+      header: "Fuel Stock ",
       cell: ({ row }) => row?.original?.fuel?.fuelVolume,
     },
 
     {
-      header: "Fuel volume Left",
-      cell: ({ row }) => row?.original?.fuel?.volumeLeft || "N/A",
+      header: "Fuel Stock Left",
+      cell: ({ row }) =>
+        row?.original?.fuel?.volumeLeft ||
+        row?.original?.fuel?.fuelVolume ||
+        "N/A",
     },
 
     {
@@ -68,6 +72,11 @@ export function fuelPumpColumnDef(_: IUser): ColumnDef<PumpFuelItem>[] {
         const date = new Date(row.original.createdAt);
         return date.toLocaleDateString("en-US");
       },
+    },
+
+    {
+      header: "Actions",
+      cell: ({ row }) => <ActionBtns row={row} />,
     },
   ];
 
