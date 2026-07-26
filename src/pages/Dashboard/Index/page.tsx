@@ -17,6 +17,7 @@ import { useSearchParams } from "react-router-dom";
 import { DateRange } from "react-day-picker";
 import { DateRangePicker } from "./components/DateRangePicker";
 import { Button } from "@/components/ui/button";
+import Loading from "@/components/Loading";
 
 export default function DashboardPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -65,7 +66,7 @@ export default function DashboardPage() {
   if (isLoading) {
     return (
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {[...Array(8)].map((_, i) => (
+        {[...Array(16)].map((_, i) => (
           <Skeleton key={i} className="h-36 rounded-xl" />
         ))}
       </div>
