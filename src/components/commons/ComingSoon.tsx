@@ -3,7 +3,7 @@ import { Fuel, Zap } from "lucide-react";
 
 export default function ComingSoon() {
   return (
-    <div className="h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 flex items-center justify-center px-6">
+    <div className="h-screen bg-gradient-to-br z-10 from-slate-950 via-slate-900 to-slate-800 flex items-center justify-center px-6">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}

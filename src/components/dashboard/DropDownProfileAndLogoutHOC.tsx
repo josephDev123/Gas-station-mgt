@@ -28,11 +28,11 @@ export default function DropDownProfileAndLogoutHOC<T>({
       </section>
 
       {isOpen && (
-        <section className="flex flex-col space-y-2 z-40 absolute top-11 right-0 ">
+        <section className="flex flex-col space-y-2 z-40 drop-shadow-sm bg-white p-2 absolute top-11 right-0 ">
           <Link
             to="/dashboard/profile"
             type="button"
-            className="border rounded-md py-0.5 px-4 bg-green-400 text-white w-full"
+            className="border rounded-md py-0.5 px-4 text-black w-full"
           >
             Profile
           </Link>
@@ -40,7 +40,7 @@ export default function DropDownProfileAndLogoutHOC<T>({
           <button
             onClick={() => setIsDeleteOpen(true)}
             type="button"
-            className="border rounded-md py-0.5 px-4 bg-red-400  w-full"
+            className="border rounded-md py-0.5 px-4 bg-red-400  w-full text-white"
           >
             Logout
           </button>

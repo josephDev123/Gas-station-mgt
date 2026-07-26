@@ -69,15 +69,15 @@ export const leftPanel_items: IleftPanel_items[] = [
   },
 
   {
-    label: "Customer",
-    link: "/dashboard/customer",
-    icon: <BsFillPeopleFill className="size-4" />,
-  },
-
-  {
     label: "Expenses",
     link: "/dashboard/expenses",
     icon: <Banknote className="size-4" />,
+  },
+
+  {
+    label: "Customer",
+    link: "/dashboard/customer",
+    icon: <BsFillPeopleFill className="size-4" />,
   },
 
   {

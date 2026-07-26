@@ -103,7 +103,7 @@ export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
   ]);
 
   return (
-    <section className="h-[80px] flex items-center justify-between gap-3 bg-white p-4 drop-shadow-md">
+    <section className="h-[80px] z-50 flex items-center justify-between gap-3 bg-white p-4 drop-shadow-md">
       <span className={`sm:hidden inline-flex items-center gap-2`}>
         <img src={images.logo} alt="logo" className="size-7 rounded-md" />
         <span className="font-medium text-sm sm:block hidden">GS</span>
@@ -114,7 +114,7 @@ export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
           onClick={() => navigate("/")}
           className="sm:size-6 size-4 cursor-pointer"
         />
-        <div className="relative">
+        <div className="relative ">
           <button
             type="button"
             onClick={handleNotificationToggle}
@@ -137,7 +137,7 @@ export default function Navbar({ mobileLeftPanelToggle }: INavbar) {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -8, scale: 0.96 }}
                 transition={{ duration: 0.18, ease: "easeOut" }}
-                className="fixed left-2 right-2 top-[88px] z-50 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-3 sm:w-96"
+                className="fixed left-2 right-2 top-[88px]  overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-3 sm:w-96"
               >
                 <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
                   <div>
